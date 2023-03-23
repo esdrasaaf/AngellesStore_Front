@@ -15,14 +15,20 @@ export default function SignInIndex() {
       <FormContainer>
         <img src={logoLogin} alt="Logo Login"/>
 
-        <LoginForm>
-            <input id="email" placeholder="E-mail" type="email" name="email" autoComplete="off" required />
-            <input id="password" placeholder="Password" type={passwordIsVisible ? "password" : "text"} name="Password" required />
-            <span><img onClick={() => { if (passwordIsVisible) setPasswordIsVisible(false); else setPasswordIsVisible(true) }} src={passwordIsVisible ? olhoAberto : olhoFechado}/></span>
-            <LoginButton type="submit" content={'Entrar'}/>
-        </LoginForm>
+        <FormBox>
+          <p>Bem-vindo</p>
 
-        <h1>Primeira vez? <Link to={"/sign-up"}>Cadastre-se aqui!</Link></h1> 
+          <LoginForm>
+              <input id="email" placeholder="E-mail" type="email" name="email" autoComplete="off" required />
+              <div>
+                <input id="password" placeholder="Password" type={passwordIsVisible ? "password" : "text"} name="Password" required />
+                <span><img onClick={() => { if (passwordIsVisible) setPasswordIsVisible(false); else setPasswordIsVisible(true) }} src={passwordIsVisible ? olhoAberto : olhoFechado}/></span>
+              </div>
+              <LoginButton type="submit" backgroundColor={'#68b0ab'} content={'Entrar'}/>
+          </LoginForm>
+
+          <h1>Primeira vez? <Link to={"/sign-up"}>Cadastre-se aqui!</Link></h1> 
+        </FormBox>
       </FormContainer>
 
       <img src={loginBackground} />
@@ -46,6 +52,25 @@ const Container = styled.div`
 
   }
 `;
+
+const FormBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 40%;
+
+  p {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    color: #FF7E67;
+    width: 90%;
+    margin-bottom: 40px;
+    cursor: default;
+    text-align: center;
+  }
+`
 
 const FormContainer = styled.div`
   background-color: #AEE1E1;
@@ -71,7 +96,7 @@ const FormContainer = styled.div`
   }
 
   h1 {
-    margin-top: 32%;
+    margin-top: 30%;
     font-family: 'Montserrat';
     font-weight: 600;
     font-size: 15px;
@@ -85,13 +110,17 @@ const LoginForm = styled.form`
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  gap: 20px;
-  position: relative;
+  gap: 15px;
+
+  div {
+    position: relative;
+  }
 
   span {
     position: absolute;
     right: 10px;
-    bottom: 38%;
+    bottom: 0;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

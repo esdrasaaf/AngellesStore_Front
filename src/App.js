@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import GlobalStyle from './assets/styles/globalStyle'
 import SignInPage from './pages/AuthPages/SignIn'
+import SignUpPage from './pages/AuthPages/SignUp'
 
 export default function App () {
     return (
@@ -8,6 +9,7 @@ export default function App () {
             <GlobalStyle/>
                 <Routes>
                     <Route path='/' element={<SignInPage />}/>
+                    <Route path='/sign-up' element={<SignUpPage />}/>
                 </Routes>
         </BrowserRouter>
     )

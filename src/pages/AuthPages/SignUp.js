@@ -1,3 +1,5 @@
+import SignUpIndex from "../../components/SignUp";
+
 export default function SignUpPage (){
-    return (<>Página de Cadastro</>)
+    return (<SignUpIndex />)
 }
