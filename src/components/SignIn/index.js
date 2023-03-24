@@ -1,14 +1,41 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import loginBackground from "../../assets/images/loginBackground.jpg";
 import logoLogin from "../../assets/images/logoLogin.png"
 import olhoAberto from "../../assets/images/olhoAberto.svg"
 import olhoFechado from "../../assets/images/olhoFechado.svg"
 import LoginButton from "../../constants/LoginButton";
+import swal from 'sweetalert';
+import axios from 'axios';
 
 export default function SignInIndex() {
   const [passwordIsVisible, setPasswordIsVisible] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  async function postLogin (e) {
+    e.preventDefault()
+
+    try {
+      const userData = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/auth/sign-in`, { email, password });
+
+      localStorage.setItem("token", userData.data.userToken);
+      localStorage.setItem("userId", userData.data.userId);
+      navigate("/home");
+
+      swal({
+        title: "Você logou com sucesso! :)",
+        icon: "success",
+      });
+    } catch (error) {
+      swal({
+        title: error.response.data,
+        icon: "error",
+      });
+    }
+}
 
   return (
     <Container>
@@ -18,13 +45,13 @@ export default function SignInIndex() {
         <FormBox>
           <p>Bem-vindo</p>
 
-          <LoginForm>
-              <input id="email" placeholder="E-mail" type="email" name="email" autoComplete="off" required />
+          <LoginForm onSubmit={postLogin}>
+              <input id="email" placeholder="E-mail" type="email" name="email" autoComplete="off" onChange={(e) => setEmail(e.target.value)} required />
               <div>
-                <input id="password" placeholder="Password" type={passwordIsVisible ? "password" : "text"} name="Password" required />
+                <input id="password" placeholder="Password" type={passwordIsVisible ? "password" : "text"} name="Password" onChange={(e) => setPassword(e.target.value)} required />
                 <span><img onClick={() => { if (passwordIsVisible) setPasswordIsVisible(false); else setPasswordIsVisible(true) }} src={passwordIsVisible ? olhoAberto : olhoFechado}/></span>
               </div>
-              <LoginButton type="submit" backgroundColor={'#68b0ab'} content={'Entrar'}/>
+              <LoginButton onsUB type="submit" backgroundColor={'#68b0ab'} content={'Entrar'}/>
           </LoginForm>
 
           <h1>Primeira vez? <Link to={"/sign-up"}>Cadastre-se aqui!</Link></h1> 
