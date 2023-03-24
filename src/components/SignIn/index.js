@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import loginBackground from "../../assets/images/loginBackground.jpg";
@@ -15,6 +15,10 @@ export default function SignInIndex() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  useEffect (() => {
+    if (localStorage.getItem("token")) navigate("/home");
+  }, [])
+
   async function postLogin (e) {
     e.preventDefault()
 
@@ -23,10 +27,12 @@ export default function SignInIndex() {
 
       localStorage.setItem("token", userData.data.userToken);
       localStorage.setItem("userId", userData.data.userId);
+      localStorage.setItem("userName", userData.data.userName);
       navigate("/home");
 
       swal({
-        title: "Você logou com sucesso! :)",
+        title: `Bem vindo(a), ${userData.data.userName}!`,
+        text: "Você logou com sucesso :)",
         icon: "success",
       });
     } catch (error) {
