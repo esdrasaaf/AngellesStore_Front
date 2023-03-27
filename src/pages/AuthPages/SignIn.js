@@ -1,3 +1,5 @@
 import SignInIndex from "../../components/SignIn";
 
-export default function SignInPage () { return (<SignInIndex />) };
+export default function SignInPage () { 
+    return (<SignInIndex />) 
+};
