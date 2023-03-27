@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export default function LoginButton({ content }) {
-  return <Button>{content}</Button>;
+export default function LoginButton({ content, backgroundColor }) {
+  return <Button backgroundColor={backgroundColor}>{content}</Button>;
 }
 
 //Styled Components
@@ -41,7 +41,7 @@ const Button = styled.button`
       transform: translate(0%, 0%);
       width: 100%;
       height: 100%;
-      background-color: #68B0AB;
+      background-color: ${props => props.backgroundColor};
       border-radius: 10px;
     }
     
