@@ -5,14 +5,13 @@ export default function DashboardComponent () {
     return (
         <Container>
             <CategoryComponent/>
-            <>Sobre Nós</>
         </Container>
     );
 }
 
 //Styled Components
 const Container = styled.div`
-    background-color: purple;
+    background-color: lime;
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import FooterComponent from "../../constants/Footer";
 import HeaderComponent from "../../constants/Header";
 import DashboardComponent from "../Dashboard/index";
 import CatalogComponent from "./Catalog";
@@ -26,6 +27,7 @@ export default function HomePageIndex () {
                 </MidContent>
             </MidContainer>
             
+            <FooterComponent/>
         </Container>
     );
 }
@@ -42,12 +44,15 @@ const MidContainer = styled.div`
     display: flex;
 `
 const MidContent = styled.div`
-    background-color: pink;
-    border-radius: 50px 0 0 0;
+    background-color: #408E91;
+    border-radius: 50px 0 0 50px;
     width: 90%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 80px 0;
+    gap: 100px;
 `

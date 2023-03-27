@@ -31,9 +31,9 @@ export default function PromoCarrousselComponent () {
     return (
         <Container>
             <div>
-                <StyledButton direction={true} onClick={handlePrev}><AiOutlineArrowLeft/></StyledButton>
+                <StyledButton direction={"true"} onClick={handlePrev}><AiOutlineArrowLeft/></StyledButton>
                 <Slider image={arrayOfPromos[currentIndex]} />
-                <StyledButton direction={false} onClick={handleNext}><AiOutlineArrowRight/></StyledButton>
+                <StyledButton direction={"false"} onClick={handleNext}><AiOutlineArrowRight/></StyledButton>
             </div>
         </Container>
     );
@@ -52,8 +52,6 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 25px;
-    margin-top: 85px;
-    margin-bottom: 80px;
     box-sizing: border-box;
     padding: 39px;
 
@@ -65,7 +63,7 @@ const Container = styled.div`
         align-items: center;
         
         img {
-            height: 350px;
+            height: 100%;
             width: 85%;
         } 
     }
@@ -78,7 +76,7 @@ const StyledButton = styled.button`
     height: 100%;
     width: 7.5%;
     background-color: rgba(202, 234, 247, 0.8);
-    border-radius: ${props => props.direction ? '20px 0px 0px 20px' : '0px 20px 20px 0px'};
+    border-radius: ${props => props.direction === "true" ? '20px 0px 0px 20px' : '0px 20px 20px 0px'};
 
     svg {
         font-size: 40px;

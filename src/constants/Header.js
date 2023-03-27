@@ -36,7 +36,7 @@ export default function HeaderComponent () {
 }
 
 //Styled Components
-const Container = styled.div`
+const Container = styled.header`
     width: 100%;
     height: 10vh;
     display: flex;
@@ -45,7 +45,6 @@ const Container = styled.div`
     font-size: 30px;
 `
 const Logo = styled.div`
-    background-color: blue;
     width: 20%;
     height: 100%;
     display: flex;
@@ -67,7 +66,6 @@ const Logo = styled.div`
 `
 
 const SearchContainer = styled.div`
-    background-color: yellow;
     width: 45%;
     height: 100%;
     display: flex;
@@ -75,7 +73,7 @@ const SearchContainer = styled.div`
     align-items: center;
 
     div {
-        background-color: pink;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -90,10 +88,10 @@ const SearchContainer = styled.div`
         }
 
         input {
-            width: 500px;
+            width: 100%;
             height: 45px;
             border: none;
-            padding: 10px;
+            padding: 20px;
             box-sizing: border-box;
             border-radius: 15px;
         }
@@ -101,11 +99,10 @@ const SearchContainer = styled.div`
 `
 
 const UserInfosContainer = styled.div`
-background-color: red;
     width: 20%;
     height: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
 
     div {
