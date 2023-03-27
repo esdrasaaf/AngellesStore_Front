@@ -1,25 +1,48 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import signUpBackground from "../../assets/images/signUpBackground.jpg";
 import olhoAberto from "../../assets/images/olhoAberto.svg"
 import olhoFechado from "../../assets/images/olhoFechado.svg"
 import LoginButton from "../../constants/LoginButton";
 import signUpVetor from "../../assets/images/signUpVetor.png"
+import swal from "sweetalert"
+import axios from "axios"
 
 export default function SignUpIndex() {
-  const [passwordIsVisible, setPasswordIsVisible] = useState([]);
+  const [passwordIsVisible, setPasswordIsVisible] = useState(false);
+  const [confirmPasswordIsVisible, setConfirmPasswordIsVisible] = useState(false);
+  const navigate = useNavigate()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmedPass, setConfirmedPass] = useState('')
 
-  function switchVisibility (inputId) {
-    if (!passwordIsVisible.includes(inputId)) {
-      let newArray = [...passwordIsVisible, inputId];
-      setPasswordIsVisible(newArray);
-    }
+  async function postRegister (e) {
+      e.preventDefault()
 
-    if (passwordIsVisible.includes(inputId)) {
-      let newArray = passwordIsVisible.filter((id) => id !== inputId);
-      setPasswordIsVisible(newArray);
-    }
+      if (confirmedPass !== password) {
+        return swal({
+          title: "Senhas desiguais! Por favor se atente ao confirmar sua senha!",
+          icon: "error",
+        });
+      }
+
+      try {
+        await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/auth/sign-up`, { name, email, password });
+
+        navigate("/");
+  
+        swal({
+          title: "Você se registrou com sucesso! :)",
+          icon: "success",
+        });
+      } catch (error) {
+        swal({
+          title: error.response.data,
+          icon: "error",
+        });
+      }
   }
 
   return (
@@ -30,16 +53,16 @@ export default function SignUpIndex() {
         <RightPart>
           <h1>Cadastro</h1>
 
-          <SignInForm>
-              <input id="name" placeholder="Name" type="text" name="name" autoComplete="off" required />
-              <input id="email" placeholder="E-mail" type="email" name="email" autoComplete="off" required />
+          <SignInForm onSubmit={postRegister}>
+              <input id="name" placeholder="Name" type="text" name="name" autoComplete="off" onChange={(e) => setName(e.target.value)} required />
+              <input id="email" placeholder="E-mail" type="email" name="email" autoComplete="off" onChange={(e) => setEmail(e.target.value)} required />
               <div>
-                <input id="password" placeholder="Password" type={passwordIsVisible.includes(1) ? "text" : "password"} name="Password" required />
-                <span id="passwordSpan"><img onClick={() => switchVisibility(1)} src={passwordIsVisible.includes(1) ? olhoFechado : olhoAberto}/></span>
+                <input id="password" placeholder="Password" type={passwordIsVisible ? "text" : "password"} name="Password" onChange={(e) => setPassword(e.target.value)} required />
+                <span id="passwordSpan"><img onClick={() => { if (!passwordIsVisible) setPasswordIsVisible(true); else setPasswordIsVisible(false); }} src={passwordIsVisible ? olhoFechado : olhoAberto}/></span>
               </div>
               <div>
-                <input id="confirmPassword" placeholder="Confirm Password" type={passwordIsVisible.includes(2) ? "text" : "password"} name="Password" required />
-                <span id="confirmPasswordSpan"><img onClick={() => switchVisibility(2)} src={passwordIsVisible.includes(2) ? olhoFechado : olhoAberto}/></span>
+                <input id="confirmPassword" placeholder="Confirm Password" type={confirmPasswordIsVisible ? "text" : "password"} name="Password" onChange={(e) => setConfirmedPass(e.target.value)} required />
+                <span id="confirmPasswordSpan"><img onClick={() => { if (!confirmPasswordIsVisible) setConfirmPasswordIsVisible(true); else setConfirmPasswordIsVisible(false); }} src={confirmPasswordIsVisible ? olhoFechado : olhoAberto}/></span>
               </div>
               <LoginButton type="submit" backgroundColor={"#FF7E67"} content={'Confirmar'}/>
           </SignInForm>
