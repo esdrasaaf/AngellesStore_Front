@@ -11,7 +11,6 @@ export default function DashboardComponent () {
 
 //Styled Components
 const Container = styled.div`
-    background-color: lime;
     display: flex;
     flex-direction: column;
     align-items: center;

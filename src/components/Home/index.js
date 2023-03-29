@@ -4,7 +4,7 @@ import styled from "styled-components";
 import FooterComponent from "../../constants/Footer";
 import HeaderComponent from "../../constants/Header";
 import DashboardComponent from "../Dashboard/index";
-import CatalogComponent from "./Catalog";
+import TopicIndex from "../Topics";
 import PromoCarrousselComponent from "./PromoCarroussel";
 
 export default function HomePageIndex () {
@@ -23,7 +23,7 @@ export default function HomePageIndex () {
 
                 <MidContent>
                     <PromoCarrousselComponent />
-                    <CatalogComponent />
+                    <TopicIndex />
                 </MidContent>
             </MidContainer>
             
@@ -40,7 +40,7 @@ const Container = styled.div`
 
 const MidContainer = styled.div`
     width: 100%;
-    height: 100%;
+    height: auto;
     display: flex;
 `
 const MidContent = styled.div`

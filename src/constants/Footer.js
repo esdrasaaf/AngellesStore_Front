@@ -33,7 +33,7 @@ export default function FooterComponent() {
 const Container = styled.footer`
     background-color: #006A71;
     height: 400px;
-    margin-top: 30px;
+    margin-top: 10vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

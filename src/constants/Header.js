@@ -2,12 +2,15 @@ import styled from "styled-components";
 import homeLogo from "../assets/images/homeLogo.png";
 import { HiOutlineSearch, HiOutlineShoppingCart, HiOutlineBookmark } from "react-icons/hi";
 import { AiOutlineUser } from "react-icons/ai";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function HeaderComponent () {
+    const navigate = useNavigate();
+
     return (        
         <Container>
             <Logo>
-                <img src={homeLogo} alt="Baby Ângelles LogoMarca"/>
+                <img onClick={() => { navigate("/home") }} src={homeLogo} alt="Baby Ângelles LogoMarca"/>
                 <span>{`Olá, ${localStorage.getItem('userName')}!`}</span>
             </Logo>
             
