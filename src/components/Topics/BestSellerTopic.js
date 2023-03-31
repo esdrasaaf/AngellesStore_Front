@@ -1,12 +1,16 @@
 import styled from "styled-components";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { FaMedal } from "react-icons/fa";
 
 export default function BestSellerTopicComponent({ title, contentArray }) {
   const navigate = useNavigate();
 
   return (
     <Container>
-      <h1>{title}</h1>
+      <h1>
+        <FaMedal />
+        {title}
+      </h1>
 
       <List>
         {contentArray.map((c, idx) => {
@@ -32,35 +36,46 @@ const Container = styled.div`
   width: 100%;
 
   h1 {
-    margin-left: 30px;
-    background-color: #94d0cc;
+    background-color: #FCD1D1;
     width: fit-content;
     font-family: "Quicksand", sans-serif;
     font-size: 30px;
-    color: #006a71;
+    color: #FC7978;
     padding: 20px;
     border-radius: 15px 15px 0px 0px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: default;
+    display: flex;
+    justify-content: center;
+  }
+
+  svg {
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
   }
 `;
 const List = styled.ul`
-  background-color: #94d0cc;
+  background-color: #FCD1D1;
   width: 100%;
-  height: 330px;
+  height: 390px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   overflow-x: scroll;
   gap: 80px;
-  padding: 15px;
+  padding: 30px;
+  border-radius: 0 5px 0 0;
   box-sizing: border-box;
-  border-radius: 5px;
 
   ::-webkit-scrollbar {
     width: 16px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #aee1e1;
+    background: #FCD1D1;
+    border-radius: 5px;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -70,7 +85,7 @@ const List = styled.ul`
   }
 `;
 const ListCard = styled.li`
-  background-color: #ff7e67;
+  background-color: whitesmoke;
   width: 200px;
   height: 100%;
   display: flex;
@@ -90,21 +105,25 @@ const ListCard = styled.li`
   div {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     padding: 5px;
     border-radius: 5px;
-    background-color: #45526c;
-    width: 95%;
+    background-color: #FC7978;
+    width: 90%;
     height: 22%;
     font-family: "Lexend Deca", sans-serif;
     font-size: 15px;
-    color: lightpink;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: white;
+    margin-bottom: 8px;
   }
 
   img {
+    margin-top: 8px;
     height: 170px;
-    width: 80%;
+    width: 90%;
     border-radius: 10px;
   }
 `;

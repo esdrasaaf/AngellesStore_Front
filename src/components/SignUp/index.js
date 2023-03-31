@@ -4,7 +4,7 @@ import styled from "styled-components";
 import signUpBackground from "../../assets/images/signUpBackground.jpg";
 import olhoAberto from "../../assets/images/olhoAberto.svg"
 import olhoFechado from "../../assets/images/olhoFechado.svg"
-import LoginButton from "../../constants/LoginButton";
+import LoginButton from "../../constants/NiceButton";
 import signUpVetor from "../../assets/images/signUpVetor.png"
 import swal from "sweetalert"
 import axios from "axios"

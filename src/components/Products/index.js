@@ -5,13 +5,12 @@ import styled from "styled-components";
 import axios from "axios";
 import FooterComponent from "../../constants/Footer";
 import HeaderComponent from "../../constants/Header";
+import ProductComponent from "./ProductComponent";
 
 export default function ProductPageIndex() {
   const { config } = useContext(UserInfoContext);
   const { productId } = useParams();
-  const [product, setProduct] = useState([]);
-
-  console.log(product);
+  const [product, setProduct] = useState({});
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -36,7 +35,7 @@ export default function ProductPageIndex() {
       <HeaderComponent />
 
       <ProductContainer>
-        
+        <ProductComponent product={product}/>
       </ProductContainer>
 
       <FooterComponent />
@@ -51,7 +50,9 @@ const Container = styled.div`
 `;
 
 const ProductContainer = styled.div`
-  background-color: green;
-  width: 100%;
-  height: 80vh;
+  display: flex;
+  margin-bottom: 10vh;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5vh;
 `;

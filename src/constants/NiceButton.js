@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
-export default function LoginButton({ content, backgroundColor }) {
+export default function NiceButton({ content, backgroundColor }) {
   return <Button backgroundColor={backgroundColor}>{content}</Button>;
 }
 
 //Styled Components
 const Button = styled.button`
     all: unset;
-    width: 100px;
+    width: fit-content;
+    min-width: 100px;
     height: 20px;
     font-size: 16px;
     font-family: 'Montserrat', sans-serif;

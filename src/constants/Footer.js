@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import LoginButton from './NiceButton';
 
 export default function FooterComponent() {
     return (
@@ -16,9 +17,9 @@ export default function FooterComponent() {
                 </span>
 
                 <div>
-                    <h1>Contatos</h1>
-                    <h1>Pagamentos</h1>
-                    <h1>Suporte</h1>
+                    <LoginButton content={'Contatos'} backgroundColor={'#5AA897'} />
+                    <LoginButton content={'Pagamentos'} backgroundColor={'#5AA897'} />
+                    <LoginButton content={'Suporte'} backgroundColor={'#5AA897'} />
                 </div>
             </Informations>
 
@@ -33,7 +34,6 @@ export default function FooterComponent() {
 const Container = styled.footer`
     background-color: #006A71;
     height: 400px;
-    margin-top: 10vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -53,8 +53,10 @@ const BackToTop = styled.div`
         background-color: #5EB7B7;
         border: none;
         cursor: pointer;
-        font-size: 15px;
+        font-size: 17.5px;
         font-weight: 500;
+        font-family: 'Lexend Deca', sans-serif;
+        color: white;
 
         :hover {
             background-color: #5EB7B7;
@@ -73,14 +75,21 @@ const Informations = styled.div`
 
     h1 {
         text-align: center;
+        color: white;
+        font-size: 20px;
     }
 
     span {
         font-size: 15px;
         text-align: justify;
         text-indent: 20px;
-        margin-top: 20px;
-        width: 60%;
+        margin-top: 15px;
+        width: 50%;
+        color: white;
+        text-align: justify;
+        text-indent: 25px;
+        word-spacing: 0.2px;
+        line-height: 20px;
     }
 
     div {
@@ -90,7 +99,7 @@ const Informations = styled.div`
         justify-content: space-around;
         align-items: center;
         gap: 20px;
-        margin-top: 60px;
+        margin-top: 30px;
 
         h1 {
             cursor: pointer;
@@ -117,4 +126,5 @@ const Localization = styled.div`
     gap: 10px;
     padding: 30px;
     box-sizing: border-box;
+    color: white;
 `
