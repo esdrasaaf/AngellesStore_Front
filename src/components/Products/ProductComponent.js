@@ -1,15 +1,36 @@
+import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import LoginButton from "../../constants/NiceButton";
+import swal from "sweetalert";
+import NiceButton from "../../constants/NiceButton";
 
-export default function ProductComponent({ product }) {
+export default function ProductComponent({ product, config }) {
   const navigate = useNavigate();
   console.log(product);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) navigate("/");
   }, []);
+
+  async function addProductOnCart (id) {
+    try {
+      const promisse = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/cart`, {productId: id}, config)
+      console.log(promisse)
+      swal({
+        title: "Produto adicionado com sucesso!",
+        text: promisse.data,
+        icon: "success"
+      })
+  } catch (error) {
+      console.log(error.response.data)
+      swal({
+          title: error.data,
+          text: "Logue novamente, por favor! :)",
+          icon: "error"
+      })        
+  }
+  }
 
   return (
     <Container>
@@ -27,10 +48,12 @@ export default function ProductComponent({ product }) {
 
         <span>{product.description}</span>
 
-        <LoginButton
-          content={"Adicionar ao carrinho"}
-          backgroundColor={"#FC7978"}
-        />
+        <ul onClick={() => { addProductOnCart(product.id) }}>
+          <NiceButton
+            content={"Adicionar ao carrinho"}
+            backgroundColor={"#FC7978"}
+          />
+        </ul>
       </ProductInfo>
     </Container>
   );
@@ -88,6 +111,22 @@ const ProductInfo = styled.div`
     line-height: 20px;
     color: #006A71;
     cursor: default;
+    max-height: 140px;
+    overflow-y: auto;
+
+    ::-webkit-scrollbar {
+        width: 16px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #ECF4F3;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #fcd1d1;
+        border-radius: 10px;
+        border: 3px solid #ffffff;
+    }
   }
 
   div {

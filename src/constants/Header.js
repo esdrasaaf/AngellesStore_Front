@@ -33,8 +33,8 @@ export default function HeaderComponent() {
       </SearchContainer>
 
       <UserInfosContainer>
-        <div>
-          <BiBookBookmark onClick={() => { navigate("/catalog") }}/>
+        <div onClick={() => { navigate("/catalog") }}>
+          <BiBookBookmark />
         </div>
         <div>
           <HiOutlineBookmark />
@@ -44,8 +44,8 @@ export default function HeaderComponent() {
           <AiOutlineUser />
         </div>
 
-        <div>
-          <HiOutlineShoppingCart onClick={() => { navigate("/cart") }}/>
+        <div onClick={() => { navigate("/cart") }}>
+          <HiOutlineShoppingCart />
         </div>
       </UserInfosContainer>
     </Container>

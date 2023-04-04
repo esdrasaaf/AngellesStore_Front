@@ -36,11 +36,11 @@ export default function TopicIndex () {
 
     return (
         <Container>
-            <BestSellerTopicComponent title={"Mais Vendidos"} contentArray={bestSellers}/>
+            <BestSellerTopicComponent title={"Mais Vendidos"} contentArray={bestSellers} config={config}/>
 
             <CategoryTopicComponent title={"Navegue por categorias"} contentArray={categories}/>
 
-            <ReleaseTopicComponent title={"Lançamentos"} contentArray={releases}/>
+            <ReleaseTopicComponent title={"Lançamentos"} contentArray={releases} config={config}/>
 
             <HistoricTopicComponent title={"Histórico de navegação"} contentArray={historic}/>
         </Container>

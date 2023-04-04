@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export default function NiceButton({ content, backgroundColor }) {
+  
   return <Button backgroundColor={backgroundColor}>{content}</Button>;
 }
 

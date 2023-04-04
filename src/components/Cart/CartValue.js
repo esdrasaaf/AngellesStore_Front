@@ -17,15 +17,17 @@ export default function CartValue ({ purchases }) {
 
 //Styled Components
 const Container = styled.div`
-    background-color: rgba(0, 0, 0, 20%);
+    background-color: #5eb7b7;
     margin-top: 20px;
     padding: 20px 30px;
     font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
     font-size: 30px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 25px;
-    width: 95.5%;
+    width: 100%;
+    box-sizing: border-box;
 `

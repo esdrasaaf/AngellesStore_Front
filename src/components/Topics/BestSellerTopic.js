@@ -1,9 +1,20 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { FaMedal } from "react-icons/fa";
+import axios from "axios";
 
-export default function BestSellerTopicComponent({ title, contentArray }) {
+export default function BestSellerTopicComponent({ title, contentArray, config }) {
   const navigate = useNavigate();
+
+  async function addProductToHistoric (productId) {
+    try {
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/historic`, { productId }, config);
+        console.log(response);
+        navigate(`/product/${productId}`);
+    } catch (error) {
+        console.log(error);
+    }
+  }
 
   return (
     <Container>
@@ -15,7 +26,7 @@ export default function BestSellerTopicComponent({ title, contentArray }) {
       <List>
         {contentArray.map((c, idx) => {
           return (
-            <ListCard key={idx} onClick={() => navigate(`/product/${c.id}`)}>
+            <ListCard key={idx} onClick={() => addProductToHistoric(c.id)}>
               <img src={c.image} alt="fotozinha ai" />
 
               <div>

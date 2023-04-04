@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Header from "../../constants/Header";
+import Footer from "../../constants/Footer";
 import CartList from "./CartList";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
@@ -44,23 +45,29 @@ export default function CartComponent () {
                     <h1>Seu Carrinho</h1>
                     <span>
                         {`Seu carrinho está vazio! Para adicionar algo no carrinho você pode ir na página do catálogo! :)`}
-                        <NiceButton onClick={() => { navigate("/home"); }} content={"Página do Catálogo"}  backgroundColor={"#FFAFB0"}/> 
+                        <div onClick={() => { navigate("/catalog"); }}><NiceButton content={"Página do Catálogo"}  backgroundColor={"#FFAFB0"}/></div>
                     </span>
                 </EmptyCart>
                     :
                 <CartList purchases={cartItens} setStatus={setStatus} config={config}/>
             }
+
+            <Footer />
         </Container>
     )
 }
 
 //Styled Components
 const Container = styled.div`
-    height: 100vh;
-    width: 100vw;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 `;
 const EmptyCart = styled.div`
-    margin: 40px auto;
+    margin-top: 40px;
+    margin-bottom: 60vh;
     width: 80vw;
     height: auto;
     display: flex;
@@ -77,7 +84,7 @@ const EmptyCart = styled.div`
 
     span {
         margin-top: 30px;
-        background-color: rgba(0, 0, 0, 20%);
+        background-color: #5eb7b7;
         font-size: 25px;
         padding: 30px;
         border-radius: 10px;

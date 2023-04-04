@@ -15,6 +15,7 @@ export default function SignUpIndex() {
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [image, setImage] = useState('')
   const [password, setPassword] = useState('')
   const [confirmedPass, setConfirmedPass] = useState('')
 
@@ -29,7 +30,7 @@ export default function SignUpIndex() {
       }
 
       try {
-        await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/auth/sign-up`, { name, email, password });
+        await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/auth/sign-up`, { name, image, email, password });
 
         navigate("/");
   
@@ -55,6 +56,7 @@ export default function SignUpIndex() {
 
           <SignInForm onSubmit={postRegister}>
               <input id="name" placeholder="Name" type="text" name="name" autoComplete="off" onChange={(e) => setName(e.target.value)} required />
+              <input id="image" placeholder="Image URL" type="url" name="image" autoComplete="off" onChange={(e) => setImage(e.target.value)} required />
               <input id="email" placeholder="E-mail" type="email" name="email" autoComplete="off" onChange={(e) => setEmail(e.target.value)} required />
               <div>
                 <input id="password" placeholder="Password" type={passwordIsVisible ? "text" : "password"} name="Password" onChange={(e) => setPassword(e.target.value)} required />
@@ -173,7 +175,7 @@ const SignInForm = styled.form`
     border-radius: 12.5px;
     box-sizing: border-box;
     border: none;
-    padding-left: 40px;
+    padding-left: 45px;
     background-color: #ECF4F3;
     font-family: 'Montserrat';
     font-weight: 500;
@@ -184,6 +186,15 @@ const SignInForm = styled.form`
   #name {
     box-sizing: border-box;
     background-image: url("https://cdn4.iconfinder.com/data/icons/eon-ecommerce-i-1/32/user_profile_man-256.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    background-position-x: 4.5%;
+    background-size: 20px;
+  }
+
+  #image {
+    box-sizing: border-box;
+    background-image: url("https://cdn4.iconfinder.com/data/icons/basic-ui-2-line/32/landscape-image-picture-photo-album-photos-256.png");
     background-repeat: no-repeat;
     background-position: left;
     background-position-x: 4.5%;

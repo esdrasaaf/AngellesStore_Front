@@ -35,7 +35,7 @@ export default function ProductPageIndex() {
       <HeaderComponent />
 
       <ProductContainer>
-        <ProductComponent product={product}/>
+        <ProductComponent product={product} config={config}/>
       </ProductContainer>
 
       <FooterComponent />

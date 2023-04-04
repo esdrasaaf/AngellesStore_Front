@@ -53,7 +53,7 @@ export default function CartList ({ purchases, setStatus, config }) {
 
 //Styled Components
 const Container = styled.div`
-    margin: 40px auto;
+    margin: 50px auto;
     width: 80vw;
     height: auto;
     display: flex;
@@ -65,10 +65,11 @@ const Container = styled.div`
         font-size: 50px;
         text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.7);
         cursor: default;
+        font-weight: 600;
     };
 `
 const PurchaseList = styled.ul`
-    background-color: rgba(0, 0, 0, 20%);
+    background-color: #5eb7b7;
     height: 50vh;
     margin-top: 20px;
     font-size: 25px;
@@ -80,19 +81,18 @@ const PurchaseList = styled.ul`
     overflow-y: auto;
 
     ::-webkit-scrollbar {
-    width: 16px;
-  }
+        width: 16px;
+    }
 
-  ::-webkit-scrollbar-track {
-    background: #FCD1D1;
-    border-radius: 5px;
-  }
+    ::-webkit-scrollbar-track {
+        background: #5eb7b7;
+    }
 
-  ::-webkit-scrollbar-thumb {
-    background-color: #fcd1d1;
-    border-radius: 10px;
-    border: 3px solid #ffffff;
-  }
+    ::-webkit-scrollbar-thumb {
+        background-color: white;
+        border-radius: 10px;
+        border: 3px solid #ffffff;
+    }
 `
 const PurchaseItem = styled.li`
     display: flex;
@@ -122,6 +122,9 @@ const LeftDiv = styled.div`
 
     svg {
         cursor: pointer;
+        background-color: #f95a4e;
+        padding: 10px;
+        border-radius: 5px;
     }
 `
 const ConfirmPurchase = styled.div`

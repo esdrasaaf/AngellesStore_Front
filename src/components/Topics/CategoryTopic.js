@@ -70,7 +70,7 @@ const List = styled.ul`
   }
 
   ::-webkit-scrollbar-track {
-    background: #aee1e1;
+    background: #5eb7b7;
     border-radius: 5px;
   }
 

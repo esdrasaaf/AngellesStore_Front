@@ -15,7 +15,7 @@ export default function HistoricTopicComponent({ title, contentArray }) {
       <List>
         {contentArray.map((c, idx) => {
           return (
-            <ListCard key={idx} onClick={() => navigate(`/product/${c.id}`)}>
+            <ListCard key={idx} onClick={() => navigate(`/product/${c.Products.id}`)}>
               <img src={c.Products.image} alt="fotozinha ai" />
 
               <div>
@@ -73,7 +73,7 @@ const List = styled.ul`
   }
 
   ::-webkit-scrollbar-track {
-    background: #aee1e1;
+    background: #5eb7b7;
     border-radius: 5px;
   }
 
