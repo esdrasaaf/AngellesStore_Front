@@ -1,55 +1,42 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import AverageRatingComponent from './AverageProductRating';
 
-export default function CatalogListComponent ({ config }) {
-    const [catalog, setCatalog] = useState([]);
-    const [media, setMedia] = useState(0);
+export default function CatalogListComponent ({ config, catalog }) {
     const navigate = useNavigate();
-
-    useEffect(() => {
-        async function getProducts() {
-            try {
-                const response = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/products`, config);
-                setCatalog(response.data);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        getProducts();
-    }, []);
 
     async function addProductToHistoric (productId) {
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/historic`, { productId }, config);
-            console.log(response);
+            await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/browsingHistory`, { productId }, config);
             navigate(`/product/${productId}`);
         } catch (error) {
             console.log(error);
         }
     }
-
-    console.log(catalog)
     
     return (
         <Container>
             <h1>Catálogo</h1>
 
             <List>
-                {catalog.map((p, idx) => {
-                    return <ListCard key={idx} onClick={() => addProductToHistoric(p.id)}>
-                        <img src={p.image} alt="fotozinha ai" />
-            
-                        <div>
-                            <span>{p.name}</span>
-                            <span>Preço: R$ {p.price}</span>
-                            <AverageRatingComponent productAvaliations={p.Avaliations}/>
-                        </div>
-                    </ListCard>
-                })}
+                {
+                    catalog.length === 0
+                    ?
+                    <span>{"Não temos produtos com esta filtragem! :("}</span>
+                    :
+                    catalog.map((p, idx) => {
+                        return <ListCard key={idx} onClick={() => addProductToHistoric(p.id)}>
+                            <img src={p.image} alt="fotozinha ai" />
+                
+                            <div>
+                                <span>{p.name}</span>
+                                <span>Preço: R$ {p.price}</span>
+                                <AverageRatingComponent productAvaliations={p.Avaliations}/>
+                            </div>
+                        </ListCard>
+                    })
+                }
             </List>
         </Container>
     )

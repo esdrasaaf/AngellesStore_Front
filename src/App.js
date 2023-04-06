@@ -7,6 +7,8 @@ import CartPage from './pages/CartPage/CartPage'
 import CatalogPage from './pages/CatalogPage/Catalog'
 import HomePage from './pages/HomePage/Home'
 import ProductPage from './pages/ProductPage/Product'
+import SavesPage from './pages/SavesPage/Save'
+import UserPage from './pages/UserPage/User'
 
 export default function App () {
     return (
@@ -21,6 +23,8 @@ export default function App () {
                         <Route path='/category/:categoryId' element={<ProductPage />} />
                         <Route path='/cart' element={<CartPage />} />
                         <Route path='/catalog' element={<CatalogPage />} />
+                        <Route path='/user' element={<UserPage />} />
+                        <Route path='/saves' element={<SavesPage />} />
                         <Route path='/404' element={<>not found component</>} />
                         <Route path='*' element={<Navigate to={'/404'} />} />
                     </Routes>

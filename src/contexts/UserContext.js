@@ -1,10 +1,11 @@
-import React, { createContext } from "react";
+import React, { createContext, useState } from "react";
 import useToken from "../hooks/useToken";
 
 export const UserInfoContext = createContext ({})
 
 function UserInfoProvider ({children}) {
     const token = useToken();
+    const [topicStatus, setTopicStatus] = useState();
 
     const config = {
         headers: {
@@ -13,7 +14,7 @@ function UserInfoProvider ({children}) {
     }
 
     return (
-        <UserInfoContext.Provider value={{ config }}>
+        <UserInfoContext.Provider value={{ config, topicStatus, setTopicStatus }}>
             {children}
         </UserInfoContext.Provider>
     )

@@ -31,7 +31,7 @@ export default function CartList ({ purchases, setStatus, config }) {
                 {purchases.map((p, idx) => 
                     <PurchaseItem key={idx}>
                         <RightDiv>
-                            <img onClick={() => navigate(`/home/${p.game._id}`)} src={p.Products.image} alt={"Banner"}/>
+                            <img onClick={() => navigate(`/product/${p.Products.id}`)} src={p.Products.image} alt={"Banner"}/>
                             {p.Products.name}
                         </RightDiv>
 

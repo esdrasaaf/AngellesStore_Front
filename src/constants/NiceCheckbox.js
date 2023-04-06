@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-export default function NiceCheckbox({ idx }) {
+export default function NiceCheckbox({ idx, onClickF, filterArray, setFilterArray, id, setStatus }) {
   
   return (
-    <Checkbox className="checkbox-wrapper-30">
+    <Checkbox className="checkbox-wrapper-30" onClick={() => onClickF(filterArray, setFilterArray, id, setStatus)}>
         <span className="checkbox">
             <input type="checkbox" id={`${idx}`}/>
             <svg>

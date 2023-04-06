@@ -36,11 +36,12 @@ export default function HeaderComponent() {
         <div onClick={() => { navigate("/catalog") }}>
           <BiBookBookmark />
         </div>
-        <div>
+
+        <div onClick={() => { navigate("/saves") }}>
           <HiOutlineBookmark />
         </div>
 
-        <div>
+        <div onClick={() => { navigate("/user") }}>
           <AiOutlineUser />
         </div>
 
