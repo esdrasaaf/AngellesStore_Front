@@ -22,7 +22,7 @@ export default function HeaderComponent() {
           src={homeLogo}
           alt="Baby Ângelles LogoMarca"
         />
-        <span>{`Olá, ${localStorage.getItem("userName")}!`}</span>
+        <span>{`Olá, ${localStorage.getItem("userName")?.split(" ")[0]}!`}</span>
       </Logo>
 
       <SearchContainer>
@@ -63,12 +63,12 @@ const Container = styled.header`
   font-size: 30px;
 `;
 const Logo = styled.div`
-  width: 26%;
+  width: 30%;
   height: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
-
+  
   img {
     height: 65px;
     cursor: pointer;
@@ -81,6 +81,8 @@ const Logo = styled.div`
     font-weight: 600;
     color: #408e91;
     cursor: default;
+    width: 50%;
+    text-align: center;
   }
 `;
 

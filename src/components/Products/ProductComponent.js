@@ -1,24 +1,64 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { HiOutlineBookmark } from "react-icons/hi";
+import { BsBookmarkFill } from 'react-icons/bs';
 import styled from "styled-components";
 import swal from "sweetalert";
 import NiceButton from "../../constants/NiceButton";
 
 export default function ProductComponent({ product, config }) {
   const navigate = useNavigate();
+  const [savedProducts, setSavedProducts] = useState({});
+  const [status, setStatus] = useState([]);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) navigate("/");
-  }, []);
 
-  async function addProductOnCart (id) {
+    async function getSavedProducts () {
+      try {
+        const hash = {};
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/saves`, config);
+
+        for (let i = 0; i < response.data.length; i++) {
+          hash[response.data[i].productId] = true
+        }
+
+        setSavedProducts(hash)
+      } catch (error) {
+        console.log(error)
+      }      
+    };
+
+    getSavedProducts();
+  }, [status]);
+
+  async function addProductOnCart(id) {
     try {
-      const promisse = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/cart`, {productId: id}, config)
-      console.log(promisse)
+      const promisse = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/cart`, {productId: id}, config);
+      
       swal({
         title: "Produto adicionado com sucesso!",
         text: promisse.data,
+        icon: "success"
+      })
+  } catch (error) {
+      console.log(error.response.data)
+      swal({
+          title: error.data,
+          text: "Logue novamente, por favor! :)",
+          icon: "error"
+      })        
+  }
+  }
+
+  async function saveProduct(id) {
+    try {
+      const promisse = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/saves`, {productId: id}, config);
+      setStatus([]);
+
+      swal({
+        title: promisse.data,
         icon: "success"
       })
   } catch (error) {
@@ -35,8 +75,10 @@ export default function ProductComponent({ product, config }) {
     <Container>
       <img src={product.image} />
 
-      <ProductInfo>
-        <h1>{product.name}</h1>
+      <ProductInfo isSaved={savedProducts[product.id]}>
+        {savedProducts[product.id] ? <BsBookmarkFill onClick={() => saveProduct(product.id)}/> : <HiOutlineBookmark onClick={() => saveProduct(product.id)}/>}
+
+        <h1>{product.name} </h1>
 
         <div>
           <h2>Cor: {product?.Colors?.name}</h2>
@@ -86,6 +128,16 @@ const ProductInfo = styled.div`
   justify-content: space-between;
   align-items: center;
   font-family: "Quicksand", sans-serif;
+  position: relative;
+
+  svg {
+    position: absolute;
+    top: -5px;
+    right: 0;
+    font-size: 50px;
+    color: ${props => props.isSaved ? "#F9F54B" : "white"};
+    cursor: pointer;
+  }
 
   h1 {
     font-size: 40px;

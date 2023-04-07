@@ -1,8 +1,8 @@
 import FooterComponent from "../../constants/Footer";
 import HeaderComponent from "../../constants/Header";
 import styled from "styled-components";
-import { BsPencil } from "react-icons/bs"
-import NiceButton from "../../constants/NiceButton";
+import { AiOutlineCamera } from "react-icons/ai";
+import { HiOutlinePencilAlt } from "react-icons/hi";
 
 export default function UserPageIndex () {
     return (
@@ -13,18 +13,29 @@ export default function UserPageIndex () {
                 <UserCard>
                     <UserInfos>
                         <UserPhoto>
+                            <AiOutlineCamera />
                             {localStorage.getItem('userPhoto') ? <img src={localStorage.getItem('userPhoto')}/> : <img src="https://img.freepik.com/vetores-premium/icone-de-circulo-de-usuario-anonimo-estilo-simples-de-ilustracao-vetorial-com-sombra-longa_520826-1931.jpg" />}
-                            <NiceButton content={"Editar Foto"} backgroundColor={"#FF8882"}>
-                                <BsPencil/>
-                            </NiceButton>
                         </UserPhoto>
 
                         <UserNameAndLogout>
                             <div>
-                                <span>{localStorage.getItem('userName') ? localStorage.getItem('userName') : "Visitante"}</span>
-                                <NiceButton content={"Editar Nome"} backgroundColor={"#FF8882"}>
-                                    <BsPencil/>
-                                </NiceButton>
+                                <h1>Minha Conta</h1>
+
+                                <span>
+                                    {localStorage.getItem('userName') ? localStorage.getItem('userName') : "Visitante"}
+                                    <HiOutlinePencilAlt />
+                                </span>
+
+                                <span>
+                                    {localStorage.getItem('userEmail') ? localStorage.getItem('userEmail') : "seuemail@.com"}
+                                    <HiOutlinePencilAlt />
+                                </span>
+
+
+                                <span>
+                                    {localStorage.getItem('userPassword') ? localStorage.getItem('userPassword') : "Sua senha"}
+                                    <HiOutlinePencilAlt />
+                                </span>
                             </div>
 
                             <LogoutSection>
@@ -69,21 +80,23 @@ const LogoutSection = styled.section`
     padding: 0px;
 
     button {
-        background: #FF8882;
+        width: fit-content;
+        background-color: #ffffff00;
         backface-visibility: hidden;
-        border-radius: .375rem;
-        border-style: solid;
-        border-width: .125rem;
+        border-bottom: 1px solid white;
+        border-top: none;
+        border-left: none;
+        border-right: none;
         box-sizing: border-box;
         color: #fff;
         cursor: pointer;
         display: inline-block;
         font-family: Circular,Helvetica,sans-serif;
-        font-size: 1.125rem;
+        font-size: 22px;
         font-weight: 700;
         letter-spacing: -.01em;
         line-height: 1.3;
-        padding: .875rem 1.125rem;
+        padding-bottom: 10px;
         position: relative;
         text-align: left;
         text-decoration: none;
@@ -135,7 +148,6 @@ const UserInfos = styled.div`
     justify-content: space-around;
     align-items: center;
     gap: 20px;
-    padding: 20px;
     border-radius: 20px;
     background-color: #5EB7B7;
 `
@@ -144,16 +156,29 @@ const UserPhoto = styled.div`
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    background-color: #96D1C7;
-    width: fit-content;
-    height: 80%;
-    padding: 15px;
+    width: 50%;
+    height: 90%;
     border-radius: 20px;
+    position: relative;
     
     img {
-        height: 270px;
-        width: 270px;
+        height: 100%;
+        width: 90%;
         border-radius: 20px;
+    }
+
+    svg {
+        cursor: pointer;
+        position: absolute;
+        bottom: 0;
+        background-color: #FFFFFF60;
+        font-size: 50px;
+        width: 90%;
+        height: 15%;
+        border-radius: 0px 0px 20px 20px;
+        padding: 10px;
+        box-sizing: border-box;
+        color: white;
     }
 `
 const UserNameAndLogout = styled.div`
@@ -162,31 +187,51 @@ const UserNameAndLogout = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    height: 65%;
     width: 50%;
+    height: 90%;
+    border-radius: 15px;
+    padding: 10px;
+    box-sizing: border-box;
 
     div {
-        background-color: #96D1C7;
         display: flex;
         width: 80%;
-        height: 50%;
-        padding: 20px;
-        gap: 20px;
+        height: 45%;
+        gap: 15px;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        border-radius: 15px;
+        box-sizing: border-box;
+
+        h1 {
+            font-size: 40px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        span {
+            font-size: 20px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            width: 100%;
+            text-align: center;
+            flex-wrap: wrap;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            svg {
+                font-size: 40px;
+                cursor: pointer;
+            }
+        }
+
+
     }
 
-    span {
-        font-size: 30px;
-        font-family: 'Quicksand', sans-serif;
-        font-weight: 600;
-        background-color: #FCD1D1;
-        width: 90%;
-        text-align: center;
-        flex-wrap: wrap;
-        padding: 10px;
-        border-radius: 20px;
-    }
 `
