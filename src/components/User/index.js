@@ -1,10 +1,135 @@
 import FooterComponent from "../../constants/Footer";
 import HeaderComponent from "../../constants/Header";
 import styled from "styled-components";
+import axios from "axios";
+import swal from "sweetalert";
 import { AiOutlineCamera } from "react-icons/ai";
 import { HiOutlinePencilAlt } from "react-icons/hi";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { UserInfoContext } from "../../contexts/UserContext";
 
 export default function UserPageIndex () {
+    let newImage = '';
+    let newName = '';
+    let newEmail = '';
+    let newPassword = '';
+
+    const navigate = useNavigate();
+    const { config } = useContext(UserInfoContext);
+    const [status, setStatus] = useState([]);
+    const [newImageState, setNewImage] = useState(localStorage.getItem("userPhoto"));
+    const [newNameState, setNewName] = useState(localStorage.getItem("userName"));
+    const [newEmailState, setNewEmail] = useState(localStorage.getItem("userEmail"));
+    const [newPasswordState, setNewPassword] = useState(localStorage.getItem("userPassword"));
+
+    useEffect(() => {
+        if (!localStorage.getItem('token')) {
+            navigate("/")
+        }
+        
+        async function getData() {
+            try {
+                const userData = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/user`, config);
+
+                localStorage.setItem("userName", userData.data.userName);
+                localStorage.setItem("userPhoto", userData.data.userPhoto);
+
+                transformEmailToSetOnLocalStorage(userData.data.userEmail);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        getData();
+    }, [status]);
+
+    function transformEmailToSetOnLocalStorage (userEmail) {
+        const emailParts = userEmail.split("@");
+        const leftEmailContent = emailParts[0];
+        const rigthEmailContent = emailParts[1];
+        let censoredEmailName = '';
+        let censoredEmailAddress = '';
+    
+        for (let i = 0; i < leftEmailContent.length; i++) {
+            if (i <= 2) { 
+                censoredEmailName += leftEmailContent[i];
+            } else {
+                censoredEmailName += "*";
+            };
+        }
+    
+        for (let i = 0; i < rigthEmailContent.length; i++) {
+            if (i <= 2) { 
+                censoredEmailAddress += rigthEmailContent[i] 
+            } else {
+                censoredEmailAddress += "*";
+            };
+        }
+    
+        localStorage.setItem('userEmail', censoredEmailName + "@" + censoredEmailAddress)
+
+        return censoredEmailName + "@" + censoredEmailAddress
+    }
+
+    function setPasswordOnLocalStorage (password) {
+        const modifiedPassword = password.replace(" ", '');
+        let replacedPassword = '';
+    
+        for (let i = 0; i < modifiedPassword?.length; i++) {
+            replacedPassword += "*";
+        }
+    
+        localStorage.setItem('userPassword', replacedPassword);
+        return replacedPassword
+    }
+
+    async function updateUserData() {
+        const userDataBody = {
+            image: newImage,
+            name: newName,
+            email: newEmail,
+            password: newPassword
+        }
+        
+        try {
+            await axios.put(`${process.env.REACT_APP_BACKEND_API_URL}/user`, { userDataBody }, config);
+            setStatus([]);
+
+            swal({
+                title: "Dado atualizado com sucesso!",
+                icon: "success",
+            })
+        } catch (error) {
+            console.log(error)
+            swal({
+                title: "Algo deu errado com a atualização!",
+                icon: "error",
+            })
+        }
+    }
+
+    async function logoutFunction() {
+        try {     
+            const response = await axios.delete(`${process.env.REACT_APP_BACKEND_API_URL}/user`, config);
+            console.log(response);
+    
+            localStorage.clear();
+            setStatus([]);
+
+            swal({
+                title: "Você foi deslogado(a) com sucesso!",
+                icon: "success",
+            })
+        } catch (error) {
+            console.log(error)
+            swal({
+                title: "Algo deu errado com o logout!",
+                icon: "error",
+            }) 
+        }
+    }
+
     return (
         <Container>
             <HeaderComponent />
@@ -13,8 +138,39 @@ export default function UserPageIndex () {
                 <UserCard>
                     <UserInfos>
                         <UserPhoto>
-                            <AiOutlineCamera />
-                            {localStorage.getItem('userPhoto') ? <img src={localStorage.getItem('userPhoto')}/> : <img src="https://img.freepik.com/vetores-premium/icone-de-circulo-de-usuario-anonimo-estilo-simples-de-ilustracao-vetorial-com-sombra-longa_520826-1931.jpg" />}
+                            <AiOutlineCamera onClick={() => {
+                                        swal({
+                                            title: "Você deseja alterar sua foto de perfil?",
+                                            icon: "info",
+                                            buttons: true,
+                                            dangerMode: false,
+                                        })
+                                        .then((willChangin) => {
+                                            if (willChangin) {
+                                                swal({
+                                                    title: "Qual será sua nova foto?",
+                                                    content: "input",
+                                                    button: {
+                                                        text: "OK",
+                                                        closeModal: false,
+                                                    }
+                                                })
+                                                .then(image => {
+                                                    if(/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(image)) {
+                                                        newImage = image;
+                                                        setNewImage(image);
+                                                        updateUserData();
+                                                    } else {
+                                                        return swal({ title: "Imagem inválida", icon: "error" })
+                                                    }
+                                                  });
+                                            } else {
+                                                swal("OK! Segue tudo do jeito que está! :)");
+                                            }
+                                        });
+                                    }}/>
+
+                            {localStorage.getItem('userPhoto') ? <img src={newImageState}/> : <img src="https://img.freepik.com/vetores-premium/icone-de-circulo-de-usuario-anonimo-estilo-simples-de-ilustracao-vetorial-com-sombra-longa_520826-1931.jpg" />}
                         </UserPhoto>
 
                         <UserNameAndLogout>
@@ -22,24 +178,143 @@ export default function UserPageIndex () {
                                 <h1>Minha Conta</h1>
 
                                 <span>
-                                    {localStorage.getItem('userName') ? localStorage.getItem('userName') : "Visitante"}
-                                    <HiOutlinePencilAlt />
+                                    <h2>Nome:</h2>
+                                    {localStorage.getItem('userName') ? newNameState : "Visitante"}
+                                    <HiOutlinePencilAlt onClick={() => {
+                                        swal({
+                                            title: "Você deseja alterar seu nome de usuário?",
+                                            icon: "info",
+                                            buttons: true,
+                                            dangerMode: false,
+                                        })
+                                        .then((willChangin) => {
+                                            if (willChangin) {
+                                                swal({
+                                                    title: "Qual será seu novo nome?",
+                                                    content: "input",
+                                                    button: {
+                                                        text: "OK",
+                                                        closeModal: false,
+                                                    }
+                                                })
+                                                .then(name => {
+                                                    newName = name;
+                                                    setNewName(name)
+
+                                                    if (name.length < 3) {
+                                                        return swal({
+                                                            title: "Nome inválido",
+                                                            icon: "error"
+                                                        })
+                                                    } else {
+                                                        updateUserData();
+                                                    }
+                                                  });
+                                            } else {
+                                                swal("OK! Segue tudo do jeito que está! :)");
+                                            }
+                                        });
+                                    }}/>
                                 </span>
 
                                 <span>
-                                    {localStorage.getItem('userEmail') ? localStorage.getItem('userEmail') : "seuemail@.com"}
-                                    <HiOutlinePencilAlt />
+                                    <h2>Email:</h2>
+                                    {localStorage.getItem('userEmail') ? newEmailState : "seuemail@.com"}
+                                    <HiOutlinePencilAlt onClick={() => {
+                                        swal({
+                                            title: "Você deseja alterar seu email de usuário?",
+                                            icon: "info",
+                                            buttons: true,
+                                            dangerMode: false,
+                                        })
+                                        .then((willChangin) => {
+                                            if (willChangin) {
+                                                swal({
+                                                    title: "Qual será seu novo email?",
+                                                    content: "input",
+                                                    button: {
+                                                        text: "OK",
+                                                        closeModal: false,
+                                                    }
+                                                })
+                                                .then(email => {
+                                                    if(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email)) {
+                                                        newEmail = email;
+                                                        const censoredEmail = transformEmailToSetOnLocalStorage(email);
+                                                        setNewEmail(censoredEmail);
+                                                        updateUserData();
+                                                    } else {
+                                                        return swal({ title: "Email inválido", icon: "error" })
+                                                    }
+                                                  });
+                                            } else {
+                                                swal("OK! Segue tudo do jeito que está! :)");
+                                            }
+                                        });
+                                    }}/>
                                 </span>
 
-
                                 <span>
-                                    {localStorage.getItem('userPassword') ? localStorage.getItem('userPassword') : "Sua senha"}
-                                    <HiOutlinePencilAlt />
+                                    <h2>Senha:</h2>
+                                    {localStorage.getItem('userPassword') ? newPasswordState : "Sua senha"}
+                                    <HiOutlinePencilAlt onClick={() => {
+                                        swal({
+                                            title: "Você deseja alterar a senha da sua conta?",
+                                            icon: "info",
+                                            buttons: true,
+                                            dangerMode: false,
+                                        })
+                                        .then((willChangin) => {
+                                            if (willChangin) {
+                                                swal({
+                                                    title: "Qual será sua nova senha?",
+                                                    content: "input",
+                                                    button: {
+                                                        text: "OK",
+                                                        closeModal: false,
+                                                    }
+                                                })
+                                                .then(password => {
+                                                    newPassword = password;
+
+                                                    const censoredPassword = setPasswordOnLocalStorage(password);
+                                                    setNewPassword(censoredPassword)
+
+                                                    if (password.length < 6) {
+                                                        return swal({
+                                                            title: "Senha muito curta!",
+                                                            icon: "error"
+                                                        })
+                                                    } else {
+                                                        updateUserData();
+                                                    }
+                                                  });
+                                            } else {
+                                                swal("OK! Segue tudo do jeito que está! :)");
+                                            }
+                                        });
+                                    }}/>
                                 </span>
                             </div>
 
                             <LogoutSection>
-                                <button>Sair da conta</button>
+                                <button onClick={() => {
+                                        swal({
+                                            title: "Você tem certeza que quer deslogar?",
+                                            icon: "warning",
+                                            buttons: true,
+                                            dangerMode: false,
+                                        })
+                                        .then((willChangin) => {
+                                            if (willChangin) {
+                                                logoutFunction()
+                                            } else {
+                                                swal("OK! Segue tudo do jeito que está! :)");
+                                            }
+                                        });
+                                    }}>
+                                        Sair da conta
+                                    </button>
                             </LogoutSection>
                         </UserNameAndLogout>
                     </UserInfos>
@@ -211,8 +486,16 @@ const UserNameAndLogout = styled.div`
             margin-bottom: 20px;
         }
 
+        h2 {
+            font-size: 25px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 500;
+            color: white;
+            letter-spacing: 0px;
+        }
+
         span {
-            font-size: 20px;
+            font-size: 18px;
             font-family: 'Quicksand', sans-serif;
             font-weight: 600;
             width: 100%;
@@ -224,9 +507,11 @@ const UserNameAndLogout = styled.div`
             display: flex;
             align-items: center;
             justify-content: space-between;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
 
             svg {
-                font-size: 40px;
+                font-size: 35px;
                 cursor: pointer;
             }
         }
