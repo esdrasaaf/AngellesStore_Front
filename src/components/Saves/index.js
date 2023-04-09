@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FooterComponent from "../../constants/Footer";
 import HeaderComponent from "../../constants/Header";
+import NiceButton from "../../constants/NiceButton";
 import { UserInfoContext } from "../../contexts/UserContext";
 import AverageRatingComponent from "../Catalog/AverageProductRating";
 
@@ -42,19 +43,30 @@ export default function SavesIndexPage() {
                 <h1>Lista de Salvos</h1>
 
                 <SavedList>
-                    {savedProductsList.map((p, idx) => {
-                        return (
-                            <ProductCard key={idx} onClick={() => addProductToHistoric(p.Products.id)}>
-                                <img src={p.Products.image} alt="fotozinha ai" />
-                    
-                                <div>
-                                    <span>{p.Products.name}</span>
-                                    <span>Preço: R$ {p.Products.price}</span>
-                                    <AverageRatingComponent productAvaliations={p.Products.Avaliations}/>
-                                </div>
-                            </ProductCard>
-                        )
-                    })}
+                    {
+                        savedProductsList.length === 0
+                        ?
+                        <EmptyList>
+                            <span>
+                                {`Sua lista está vazia! Procure por novos produtos no catálogo! :)`}
+                                <div onClick={() => { navigate("/catalog"); }}><NiceButton content={"Página do Catálogo"}  backgroundColor={"#FFAFB0"}/></div>
+                            </span>
+                        </EmptyList>
+                        :
+                        savedProductsList.map((p, idx) => {
+                            return (
+                                <ProductCard key={idx} onClick={() => addProductToHistoric(p.Products.id)}>
+                                    <img src={p.Products.image} alt="fotozinha ai" />
+                        
+                                    <div>
+                                        <span>{p.Products.name}</span>
+                                        <span>Preço: R$ {p.Products.price}</span>
+                                        <AverageRatingComponent productAvaliations={p.Products.Avaliations}/>
+                                    </div>
+                                </ProductCard>
+                            )
+                        })
+                    }
                 </SavedList>
             </MidContent>
 
@@ -147,3 +159,26 @@ const ProductCard = styled.li`
     border-radius: 10px;
   }
 `;
+const EmptyList = styled.div`
+    width: 80vw;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 600;
+    color: #ffffff;
+
+    span {
+        margin-top: 30px;
+        background-color: #5eb7b7;
+        font-size: 25px;
+        padding: 30px;
+        border-radius: 10px;
+        cursor: default;
+        gap: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    };
+` ;
