@@ -5,6 +5,7 @@ import SignInPage from './pages/AuthPages/SignIn'
 import SignUpPage from './pages/AuthPages/SignUp'
 import CartPage from './pages/CartPage/CartPage'
 import CatalogPage from './pages/CatalogPage/Catalog'
+import CategoryPage from './pages/CategoryPage/Category'
 import HomePage from './pages/HomePage/Home'
 import ProductPage from './pages/ProductPage/Product'
 import SavesPage from './pages/SavesPage/Save'
@@ -20,7 +21,7 @@ export default function App () {
                         <Route path='/sign-up' element={<SignUpPage />}/>
                         <Route path='/home' element={<HomePage />} />
                         <Route path='/product/:productId' element={<ProductPage />} />
-                        <Route path='/category/:categoryId' element={<ProductPage />} />
+                        <Route path='/category/:categoryId' element={<CategoryPage />} />
                         <Route path='/cart' element={<CartPage />} />
                         <Route path='/catalog' element={<CatalogPage />} />
                         <Route path='/user' element={<UserPage />} />
