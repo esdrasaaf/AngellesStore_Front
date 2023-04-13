@@ -1,36 +1,44 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { HiOutlineBookmark } from "react-icons/hi";
 import { BsBookmarkFill } from 'react-icons/bs';
+import { FiTrash2 } from 'react-icons/fi';
 import styled from "styled-components";
 import swal from "sweetalert";
 import NiceButton from "../../constants/NiceButton";
+import Star from "../../assets/images/ratingStar.png"
+import getAverage from "./GetAvg";
 
 export default function ProductComponent({ product, config }) {
   const navigate = useNavigate();
   const [savedProducts, setSavedProducts] = useState({});
+  const [avaliationList, setAvaliationList] = useState([]);
   const [status, setStatus] = useState([]);
+  const { productId } = useParams();
+  const avg = getAverage(product.Avaliations);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) navigate("/");
 
-    async function getSavedProducts () {
+    async function getSavedProductsAndAvaliations () {
       try {
         const hash = {};
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/saves`, config);
+        const saves = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/saves`, config);
+        const avaliations = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/avaliations/product/${productId}`, config);
 
-        for (let i = 0; i < response.data.length; i++) {
-          hash[response.data[i].productId] = true
-        }
+        for (let i = 0; i < saves.data.length; i++) {
+          hash[saves.data[i].productId] = true
+        };
 
-        setSavedProducts(hash)
+        setSavedProducts(hash);
+        setAvaliationList(avaliations.data);
       } catch (error) {
         console.log(error)
       }      
     };
 
-    getSavedProducts();
+    getSavedProductsAndAvaliations();
   }, [status]);
 
   async function addProductOnCart(id) {
@@ -61,63 +69,125 @@ export default function ProductComponent({ product, config }) {
         title: promisse.data,
         icon: "success"
       })
-  } catch (error) {
-      console.log(error.response.data)
-      swal({
-          title: error.data,
-          text: "Logue novamente, por favor! :)",
-          icon: "error"
-      })        
+    } catch (error) {
+        console.log(error.response.data)
+        swal({
+            title: error.data,
+            text: "Logue novamente, por favor! :)",
+            icon: "error"
+        })        
+    }
   }
+
+  async function deleteAvaliation(avaliationId) {
+    try {
+      const promisse = await axios.delete(`${process.env.REACT_APP_BACKEND_API_URL}/avaliations/${avaliationId}`, config);
+      setStatus([]);
+
+      swal({
+        title: promisse.data,
+        icon: "success"
+      })
+    } catch (error) {
+        console.log(error.response.data)
+        swal({
+            title: error.data,
+            text: "Logue novamente, por favor! :)",
+            icon: "error"
+        })        
+    }
   }
 
   return (
     <Container>
-      <img src={product.image} />
+      <ProductContainer>
+        <img src={product.image} />
 
-      <ProductInfo isSaved={savedProducts[product.id]}>
-        {savedProducts[product.id] ? <BsBookmarkFill onClick={() => saveProduct(product.id)}/> : <HiOutlineBookmark onClick={() => saveProduct(product.id)}/>}
+        <ProductInfo isSaved={savedProducts[product.id]}>
+          {savedProducts[product.id] ? <BsBookmarkFill onClick={() => saveProduct(product.id)}/> : <HiOutlineBookmark onClick={() => saveProduct(product.id)}/>}
 
-        <h1>{product.name} </h1>
+          <h1>{product.name} </h1>
 
-        <div>
-          <h2>Cor: {product?.Colors?.name}</h2>
-          <h2>Categoria: {product?.Categories?.name}</h2>
-          <h2>Marca: {product?.Brands?.name}</h2>
-          <h2>Preço: R$ {product.price}</h2>
-        </div>
+          <div>
+            <h2>Cor: {product?.Colors?.name}</h2>
+            <h2>Categoria: {product?.Categories?.name}</h2>
+            <h2>Marca: {product?.Brands?.name}</h2>
+            <h2>Preço: R$ {product.price}</h2>
+          </div>
 
-        <span>{product.description}</span>
+          <span>{product.description}</span>
 
-        <ul onClick={() => { addProductOnCart(product.id) }}>
-          <NiceButton
-            content={"Adicionar ao carrinho"}
-            backgroundColor={"#FC7978"}
-          />
-        </ul>
-      </ProductInfo>
+          <ul onClick={() => { addProductOnCart(product.id) }}>
+            <NiceButton
+              content={"Adicionar ao carrinho"}
+              backgroundColor={"#FC7978"}
+            />
+          </ul>
+        </ProductInfo>
+      </ProductContainer>
+
+      <AvaliationSection>
+        <h1>Avaliações deste produto: ({avg} Estrelas)</h1>
+
+        <AvaliationList>
+          {
+            avaliationList.length === 0
+            ?
+            <EmptyList>
+                <span>
+                    {`Este produto ainda não recebeu avaliações! :)`}
+                </span>
+            </EmptyList>
+            :
+            avaliationList.map((a, idx) => {
+                return (
+                    <AvaliationCard key={idx}>
+                        <div>
+                          <Comment>
+                            <img src={a.User.image} alt="user image"/>
+                            <div>
+                              <h2>{a.User.name}</h2>
+                              <span>{a.avaliation}</span>
+                            </div>
+                          </Comment>
+
+                          {
+                            a.User.id === Number(localStorage.getItem("userId"))
+                            ?
+                            <RatingWithLogout>
+                              <Rating>
+                                <h1>{a.rating}</h1>
+                                <img src={Star}/>
+                              </Rating>
+
+                              <FiTrash2 onClick={() => { deleteAvaliation(a.id) }}/>
+                            </RatingWithLogout>
+                            :
+                            <Rating>
+                              <h1>{a.rating}</h1>
+                              <img src={Star}/>
+                            </Rating>
+                          }
+                        </div>
+                    </AvaliationCard>
+                )
+            })
+          }
+        </AvaliationList>
+      </AvaliationSection>
     </Container>
   );
 }
 
 //Styled Components
 const Container = styled.div`
-  background-color: #5eb7b7;
-  height: 80vh;
+  height: auto;
   width: 75%;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  border-radius: 50px;
-  box-sizing: border-box;
-  padding: 70px;
-  gap: 9%;
-
-  img {
-    height: 550px;
-    width: 450px;
-    border-radius: 20px;
-  }
+  gap: 45px;
 `;
 
 const ProductInfo = styled.div`
@@ -203,5 +273,208 @@ const ProductInfo = styled.div`
       box-sizing: border-box;
       padding-left: 15px;
     }
+  }
+`;
+
+const ProductContainer = styled.div`
+  background-color: #5eb7b7;
+  display: flex;
+  gap: 9%;
+  height: 63vh;
+  width: 90%;
+  padding: 65px;
+  border-radius: 50px;
+
+  img {
+    height: 550px;
+    width: 450px;
+    border-radius: 20px;
+  }
+`;
+
+const AvaliationSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  margin-top: 40px;
+  background-color: #5eb7b7;
+  border-radius: 50px;
+  padding-bottom: 40px;
+
+  h1 {
+      margin-left: 20px;
+      font-size: 40px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      color: white;
+      text-align: start;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+`;
+
+const AvaliationList = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
+
+  ::-webkit-scrollbar {
+        width: 16px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #5eb7b7;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: #fcd1d1;
+        border-radius: 10px;
+        border: 3px solid #ffffff;
+    }
+`;
+
+const AvaliationCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 20px 30px;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+
+  
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    width: fit-content;
+    background-color: black;
+  }
+`;
+
+const EmptyList = styled.div`
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 600;
+    color: #ffffff;
+
+
+    span {
+        width: 50%;
+        font-size: 25px;
+        border-radius: 50px;
+        cursor: default;
+        gap: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px 50px 20px;
+    };
+`;
+
+const Comment = styled.div`
+  background-color: blue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: 100%;
+  width: auto;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 22px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    color: white;
+    height: 90%;
+    background-color: black;
+    align-items: start;
+    padding: 10px 20px;
+
+    h2 {
+      margin-top: 10px;
+    }
+
+    span {
+      font-size: 18px;
+      flex-wrap: wrap;
+      word-break: break-all;
+      margin-bottom: 10px;
+      text-align: justify;
+      line-height: 30px;
+      max-height: 100px;
+      overflow-y: auto;
+      
+      ::-webkit-scrollbar {
+          width: 16px;
+      }
+
+      ::-webkit-scrollbar-track {
+          background: #ECF4F3;
+      }
+
+      ::-webkit-scrollbar-thumb {
+          background-color: #fcd1d1;
+          border-radius: 10px;
+          border: 3px solid #ffffff;
+      }
+    }
+  }
+
+  img {
+    height: 50px;
+    width: 50px;
+    border-radius: 100px;
+  }
+`;
+
+const Rating = styled.div`
+  display: flex;
+  gap: 14px;
+
+  h1 {
+      margin-left: 0px;
+      font-size: 20px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      color: white;
+      text-align: start;
+      padding: 0px;
+      box-sizing: border-box;
+    }
+
+  img {
+    height: 40px;
+    width: 40px;
+  }
+`;
+
+const RatingWithLogout = styled.div`
+  background-color: red;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    font-size: 50px;
+    color: red;
+    cursor: pointer;
   }
 `;
