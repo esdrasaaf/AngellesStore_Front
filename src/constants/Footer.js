@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import swal from "sweetalert";
 import LoginButton from './NiceButton';
 
 export default function FooterComponent() {
@@ -17,9 +18,15 @@ export default function FooterComponent() {
                 </span>
 
                 <div>
-                    <LoginButton content={'Contatos'} backgroundColor={'#5AA897'} />
-                    <LoginButton content={'Pagamentos'} backgroundColor={'#5AA897'} />
-                    <LoginButton content={'Suporte'} backgroundColor={'#5AA897'} />
+                    <p onClick={() => swal({title: "Função em desenvolvimento", icon: 'info'})}>
+                        <LoginButton content={'Contatos'} backgroundColor={'#5AA897'} />
+                    </p>
+                    <p onClick={() => swal({title: "Função em desenvolvimento", icon: 'info'})}>
+                        <LoginButton content={'Pagamentos'} backgroundColor={'#5AA897'} />
+                    </p>
+                    <p onClick={() => swal({title: "Função em desenvolvimento", icon: 'info'})}>
+                        <LoginButton content={'Suporte'} backgroundColor={'#5AA897'} />
+                    </p>
                 </div>
             </Informations>
 

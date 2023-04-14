@@ -8,9 +8,15 @@ import {
 import { BiBookBookmark } from 'react-icons/bi';
 import { AiOutlineUser } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function HeaderComponent() {
   const navigate = useNavigate();
+  const [productName, setProductName] = useState();
+
+  function moveToSearchProductsPage () {
+    navigate(`/product/search/${productName}`)
+  }
 
   return (
     <Container>
@@ -27,8 +33,8 @@ export default function HeaderComponent() {
 
       <SearchContainer>
         <div>
-          <input type="text" />
-          <HiOutlineSearch />
+          <input type="text" onChange={(e) => { setProductName(e.target.value) }} placeholder="Pesquise produtos por aqui..."/>
+          <HiOutlineSearch onClick={moveToSearchProductsPage}/>
         </div>
       </SearchContainer>
 

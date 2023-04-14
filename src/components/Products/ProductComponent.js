@@ -9,18 +9,24 @@ import swal from "sweetalert";
 import NiceButton from "../../constants/NiceButton";
 import Star from "../../assets/images/ratingStar.png"
 import getAverage from "./GetAvg";
+import Rating from 'react-rating';
+import emptyStar from '../../assets/images/emptyStar.png';
+import ratingStar from '../../assets/images/ratingStar.png';
 
 export default function ProductComponent({ product, config }) {
   const navigate = useNavigate();
   const [savedProducts, setSavedProducts] = useState({});
   const [avaliationList, setAvaliationList] = useState([]);
+  const [avaliationText, setAvaliationText] = useState("");
+  const [avaliationStar, setAvaliationStar] = useState(0);
   const [status, setStatus] = useState([]);
+  const [avaliationStatus, setAvaliationStatus] = useState(false);
   const { productId } = useParams();
-  const avg = getAverage(product.Avaliations);
+  const [avg, setAvg] = useState(0);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) navigate("/");
-
+    
     async function getSavedProductsAndAvaliations () {
       try {
         const hash = {};
@@ -33,13 +39,14 @@ export default function ProductComponent({ product, config }) {
 
         setSavedProducts(hash);
         setAvaliationList(avaliations.data);
+        setAvg(getAverage(avaliations.data).toFixed(1))
       } catch (error) {
         console.log(error)
       }      
     };
 
     getSavedProductsAndAvaliations();
-  }, [status]);
+  }, [status, avg]);
 
   async function addProductOnCart(id) {
     try {
@@ -48,6 +55,30 @@ export default function ProductComponent({ product, config }) {
       swal({
         title: "Produto adicionado com sucesso!",
         text: promisse.data,
+        icon: "success"
+      })
+  } catch (error) {
+      console.log(error.response.data)
+      swal({
+          title: error.data,
+          text: "Logue novamente, por favor! :)",
+          icon: "error"
+      })        
+  }
+  }
+
+  async function addAvaliation(e) {
+    e.preventDefault()
+
+    try {
+      const promisse = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/avaliations`, {rating: avaliationStar, avaliation: avaliationText, productId: Number(productId)}, config);
+      setStatus([]);
+      setAvaliationStatus(false);
+      setAvaliationStar(0)
+      setAvaliationText("")
+
+      swal({
+        title: "Avaliação adicionada com sucesso!",
         icon: "success"
       })
   } catch (error) {
@@ -127,7 +158,43 @@ export default function ProductComponent({ product, config }) {
       </ProductContainer>
 
       <AvaliationSection>
-        <h1>Avaliações deste produto: ({avg} Estrelas)</h1>
+        <h1>
+          Avaliações deste produto: ({avg} Estrelas) 
+          
+          <div onClick={() => {
+            if (!avaliationStatus) {
+              setAvaliationStatus(true)
+            } else {
+              setAvaliationStatus(false)
+              setAvaliationStar(0)
+              setAvaliationText("")
+            }
+          }}>
+            <NiceButton
+              content={avaliationStatus ? "Descartar avaliação" : "Adicionar avaliação"}
+              backgroundColor={"#FC7978"}
+            />
+          </div>
+        </h1>
+        
+        {
+          avaliationStatus
+          ?
+          <AddAvaliationForm onSubmit={addAvaliation}>
+            <div>
+              <input value={avaliationText} placeholder="Deixe aqui sua avaliação sobre este produto." onChange={(e) => {setAvaliationText(e.target.value)}}/>
+              <Rating
+                initialRating={avaliationStar}
+                onChange={(value) => {setAvaliationStar(value)}}
+                emptySymbol={<img src={emptyStar} className="icon" />}
+                fullSymbol={<img src={ratingStar} className="icon" />}
+              />
+              <button>enviar</button>
+            </div>
+          </AddAvaliationForm>
+          :
+          <></>
+        }
 
         <AvaliationList>
           {
@@ -155,18 +222,18 @@ export default function ProductComponent({ product, config }) {
                             a.User.id === Number(localStorage.getItem("userId"))
                             ?
                             <RatingWithLogout>
-                              <Rating>
+                              <RatingDiv>
                                 <h1>{a.rating}</h1>
                                 <img src={Star}/>
-                              </Rating>
+                              </RatingDiv>
 
                               <FiTrash2 onClick={() => { deleteAvaliation(a.id) }}/>
                             </RatingWithLogout>
                             :
-                            <Rating>
+                            <RatingDiv>
                               <h1>{a.rating}</h1>
                               <img src={Star}/>
-                            </Rating>
+                            </RatingDiv>
                           }
                         </div>
                     </AvaliationCard>
@@ -205,7 +272,7 @@ const ProductInfo = styled.div`
     top: -5px;
     right: 0;
     font-size: 50px;
-    color: ${props => props.isSaved ? "#F2DF3A" : "white"};
+    color: ${props => props.isSaved ? "#ffff2e" : "white"};
     cursor: pointer;
   }
 
@@ -311,7 +378,14 @@ const AvaliationSection = styled.section`
       text-align: start;
       padding: 40px;
       box-sizing: border-box;
-    }
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      button {
+        margin-right: 20px;
+      }
+  }
 `;
 
 const AvaliationList = styled.div`
@@ -344,8 +418,6 @@ const AvaliationCard = styled.div`
   width: 100%;
   height: auto;
   border-radius: 20px;
-
-  
 
   div {
     display: flex;
@@ -444,7 +516,7 @@ const Comment = styled.div`
   }
 `;
 
-const Rating = styled.div`
+const RatingDiv = styled.div`
   display: flex;
   gap: 14px;
 
@@ -478,3 +550,28 @@ const RatingWithLogout = styled.div`
     cursor: pointer;
   }
 `;
+
+const AddAvaliationForm = styled.form`
+  margin: 20px 40px;
+
+  div {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    input {
+      height: 60px;
+      width: 70%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    button {
+      height: 40px;
+      width: 15%;
+      cursor: pointer;
+    }
+  }
+`
