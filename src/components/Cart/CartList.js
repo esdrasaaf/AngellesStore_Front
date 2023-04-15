@@ -8,6 +8,7 @@ import swal from "sweetalert";
 
 export default function CartList ({ purchases, setStatus, config }) {
     const navigate = useNavigate()
+    const productsArray = purchases.map((p) => { return p.Products })
 
     async function deleteCartItem (id) {
         try {
@@ -23,6 +24,23 @@ export default function CartList ({ purchases, setStatus, config }) {
             })        
         }
     }
+
+    async function postPurchase() {
+        try {
+            const teste = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/payment`, { productsArray }, config)
+            window.location.href = teste.data
+        } catch (error) {
+            console.log(error.response.data)
+            swal({
+                title: error.response.data,
+                text: "Logue novamente, por favor! :)",
+                icon: "error"
+            })        
+        }
+    }
+
+    //Array de produtos do carrinho
+    console.log(productsArray)
 
     return (
         <Container>
@@ -45,7 +63,7 @@ export default function CartList ({ purchases, setStatus, config }) {
 
             <ConfirmPurchase>
                 <CartValue purchases={purchases}/>
-                <NiceButton purchases={purchases} setStatus={setStatus} content={"Confirmar Compra"} backgroundColor={'lightcoral'}/>
+                <div onClick={postPurchase}><NiceButton purchases={purchases} setStatus={setStatus} content={"Confirmar Compra"} backgroundColor={'lightcoral'}/></div>
             </ConfirmPurchase>
         </Container>
     )

@@ -14,6 +14,8 @@ export default function CategoryPageIndex () {
     const { categoryId } = useParams();
     const navigate = useNavigate();
 
+    window.scrollTo(0, 0);
+
     async function addProductToHistoric (productId) {
         try {
             await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/browsingHistory`, { productId }, config);

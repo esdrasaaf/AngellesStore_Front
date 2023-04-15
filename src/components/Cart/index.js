@@ -19,7 +19,6 @@ export default function CartComponent () {
         async function getCartItens() {
             try {
                 const promisse = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/cart`, config)
-                console.log(promisse)
                 setCartItens(promisse.data)
             } catch (error) {
                 console.log(error.response.data)

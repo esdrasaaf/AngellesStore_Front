@@ -23,7 +23,7 @@ export default function CatalogListComponent ({ config, catalog }) {
                 {
                     catalog.length === 0
                     ?
-                    <span>{"Não temos produtos com esta filtragem! :("}</span>
+                    <p>{"Não temos produtos com esta filtragem! :("}</p>
                     :
                     catalog.map((p, idx) => {
                         return <ListCard key={idx} onClick={() => addProductToHistoric(p.id)}>
@@ -65,6 +65,12 @@ const List = styled.ul`
   align-items: center;
   flex-wrap: wrap;
   gap: 50px;
+
+  p {
+    font-size: 27px;
+    font-family: 'Lexend Deca', sans-serif;
+    color: #006A71;
+  }
 `;
 const ListCard = styled.li`
   background-color: whitesmoke;

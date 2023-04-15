@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserInfoContext } from "../../contexts/UserContext";
 import UserAvaliationsComponent from "./UserAvaliations";
+import UserPurchasesComponent from "./UserPurchases";
 
 export default function UserPageIndex () {
     let newImage = '';
@@ -20,6 +21,7 @@ export default function UserPageIndex () {
     const { config } = useContext(UserInfoContext);
     const [status, setStatus] = useState([]);
     const [avaliations, setAvaliations] = useState([]);
+    const [purchases, setPurchases] = useState([]);
     const [newImageState, setNewImage] = useState(localStorage.getItem("userPhoto"));
     const [newNameState, setNewName] = useState(localStorage.getItem("userName"));
     const [newEmailState, setNewEmail] = useState(localStorage.getItem("userEmail"));
@@ -34,8 +36,10 @@ export default function UserPageIndex () {
             try {
                 const userData = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/user`, config);
                 const userAvaliations = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/avaliations/user`, config);
+                const userPurchases = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/payment`, config);
 
-                setAvaliations(userAvaliations.data)
+                setAvaliations(userAvaliations.data);
+                setPurchases(userPurchases.data);
 
                 localStorage.setItem("userName", userData.data.userName);
                 localStorage.setItem("userPhoto", userData.data.userPhoto);
@@ -325,7 +329,8 @@ export default function UserPageIndex () {
                     </UserInfos>
                 </UserCard>
 
-                <UserAvaliationsComponent avaliations={avaliations}/>
+                <UserAvaliationsComponent avaliations={avaliations} />
+                <UserPurchasesComponent purchases={purchases} />
             </MidContent>
 
             <FooterComponent />

@@ -148,8 +148,8 @@ const ListCard = styled.li`
     position: absolute;
     justify-content: center;
     align-items: center;
-    top: 0px;
-    right:  0px;
+    top: -10px;
+    right:  -10px;
     z-index: 2;
   }
 
