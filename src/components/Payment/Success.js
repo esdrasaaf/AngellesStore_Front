@@ -4,29 +4,33 @@ import NiceButton from "../../constants/NiceButton";
 import swal from "sweetalert";
 import { UserInfoContext } from "../../contexts/UserContext";
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 export default function PaymentSuccessIndex() {
     const navigate = useNavigate();
     const { purchaseId } = useParams();
     const { config } = useContext(UserInfoContext);
 
-    async function confirmPurchase() {
-        try {
-            await axios.put(`${process.env.REACT_APP_BACKEND_API_URL}/payment/confirm/${purchaseId}`, null, config);
-
-            await axios.delete(`${process.env.REACT_APP_BACKEND_API_URL}/cart/clear/all`, config);
-
-            navigate("/cart");
-        } catch (error) {
-            console.log(error);
-            swal({
-                title: error.response.data.name,
-                text: "Logue novamente, por favor! :)",
-                icon: "error"
-            });
+    useEffect(() => {
+        async function confirmPurchase () {
+            try {
+                await axios.put(`${process.env.REACT_APP_BACKEND_API_URL}/payment/confirm/${purchaseId}`, null, config);
+    
+                await axios.put(`${process.env.REACT_APP_BACKEND_API_URL}/payment/numberofsales/${purchaseId}`, null, config);
+    
+                await axios.delete(`${process.env.REACT_APP_BACKEND_API_URL}/cart/clear/all`, config);
+            } catch (error) {
+                console.log(error);
+                swal({
+                    title: error.response.data.name,
+                    text: "Logue novamente, por favor! :)",
+                    icon: "error"
+                });
+            }
         }
-    }
+
+        confirmPurchase();
+    }, [])
 
     return (
         <Container>
@@ -40,7 +44,7 @@ export default function PaymentSuccessIndex() {
                     
                     <p>Sua compra foi efetuada com sucesso!</p>
                 
-                    <div onClick={confirmPurchase}><NiceButton content={"Voltar para carrinho"} backgroundColor={"lightcoral"}/></div>
+                    <div onClick={() => navigate("/cart")}><NiceButton content={"Voltar para carrinho"} backgroundColor={"lightcoral"}/></div>
                 </Box>
             </Div>
         </Container>

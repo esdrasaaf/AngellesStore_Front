@@ -31,11 +31,11 @@ const Container = styled.div`
   width: 62%;
 
   h1 {
-    background-color: #FCD1D1;
+    background-color: #5eb7b7;
     width: fit-content;
     font-family: "Quicksand", sans-serif;
     font-size: 30px;
-    color: #FC7978;
+    color: white;
     padding: 20px;
     border-radius: 15px 15px 0px 0px;
     font-weight: 600;
@@ -52,7 +52,7 @@ const Container = styled.div`
   }
 `;
 const List = styled.ul`
-  background-color: #FCD1D1;
+  background-color: #5eb7b7;
   width: 100%;
   height: 390px;
   display: flex;
@@ -113,6 +113,10 @@ const ListCard = styled.li`
     letter-spacing: 1px;
     color: white;
     margin-bottom: 8px;
+
+    span {
+      text-align: center
+    }
   }
 
   img {

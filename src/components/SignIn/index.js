@@ -93,7 +93,7 @@ export default function SignInIndex() {
   return (
     <Container>
       <FormContainer>
-        <img src={logoLogin} alt="Logo Login"/>
+        <img className="logo" src={logoLogin} alt="Logo Login"/>
 
         <FormBox>
           <p>Bem-vindo</p>
@@ -111,7 +111,7 @@ export default function SignInIndex() {
         </FormBox>
       </FormContainer>
 
-      <img src={loginBackground} />
+      <img className="background" src={loginBackground} />
     </Container>
   );
 }
@@ -124,12 +124,40 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
 
+  @media (max-width: 1300px) {
+    justify-content: center;
+    position: relative;
+    padding-top: 80px;
+
+    .background {
+      display: none;
+    }
+
+    .logo {
+      width: 20%;
+      height: 20%;
+      position: absolute;
+      z-index: 2;
+      top: 10%;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    padding-top: 0px;
+
+    .logo {
+      width: 200px;
+      height: 150px;
+      position: initial;
+      margin-bottom: 50px;
+    }
+  }
+
   img {
     height: 100vh;
     width: 70%;
     border-radius: 50px 0px 0px 50px;
     box-shadow: -15px 3px 15px -7px rgba(140,140,140,1);
-
   }
 `;
 
