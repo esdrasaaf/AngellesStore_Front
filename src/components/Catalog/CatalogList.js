@@ -107,6 +107,10 @@ const ListCard = styled.li`
     color: white;
     margin-bottom: 8px;
 
+    span {
+      text-align: center
+    }
+
     img {
         height: 20px;
         width: 20px;

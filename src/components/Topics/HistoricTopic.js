@@ -169,6 +169,10 @@ const ListCard = styled.li`
     letter-spacing: 1px;
     color: white;
     margin-bottom: 8px;
+
+    span {
+      text-align: center
+    }
   }
 
   img {

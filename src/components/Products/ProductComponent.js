@@ -211,7 +211,7 @@ export default function ProductComponent({ product, config }) {
                     <AvaliationCard key={idx}>
                         <div>
                           <Comment>
-                            <img src={a.User.image} alt="user image"/>
+                            <img src={a.User.image ? a.User.image : "https://img.freepik.com/vetores-premium/icone-de-circulo-de-usuario-anonimo-estilo-simples-de-ilustracao-vetorial-com-sombra-longa_520826-1931.jpg"} alt="user image"/>
                             <div>
                               <h2>{a.User.name}</h2>
                               <span>{a.avaliation}</span>
@@ -427,7 +427,7 @@ const AvaliationCard = styled.div`
     box-sizing: border-box;
     border-radius: 20px;
     width: fit-content;
-    background-color: black;
+    background-color: #96D1C7;
   }
 `;
 
@@ -475,7 +475,7 @@ const Comment = styled.div`
     font-weight: 700;
     color: white;
     height: 90%;
-    background-color: black;
+    background-color: #006A71;
     align-items: start;
     padding: 10px 20px;
 

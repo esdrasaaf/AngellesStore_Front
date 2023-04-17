@@ -98,10 +98,25 @@ const Background = styled.div`
   box-sizing: border-box;
   padding: 50px;
 
+  @media (max-width: 1500px) {
+    justify-content: center;
+
+    img {
+      display: none;
+    }
+  }
+
+  @media (max-width: 750px) {
+    width: 100%;
+    height: 100%;
+    border-radius: none;
+  }
+
   img {
     padding-right: 10%;
     padding-left: 4%;
     border-right: 2px solid #194350;
+    width: 50%;
   }
 `
 
@@ -112,6 +127,14 @@ const RightPart = styled.div`
   justify-content: center;
   height: 90%;
   width: 30%;
+
+  @media (max-width: 1500px) {
+    width: 70%;
+  }
+
+  @media (max-width: 750px) {
+    width: 100%;
+  }
 
   h1 {
     font-family: 'Quicksand', sans-serif;
