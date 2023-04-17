@@ -47,7 +47,7 @@ export default function SearchPageIndex () {
                     {
                         productList.length === 0
                         ?
-                        <span>{"Não temos produtos com este nome no estoque! :("}</span>
+                        <p>{"Não temos produtos com este nome no estoque! :("}</p>
                         :
                         productList.map((p, idx) => {
                             return <ListCard key={idx} onClick={() => addProductToHistoric(p.id)}>
@@ -102,6 +102,12 @@ const List = styled.ul`
   align-items: center;
   flex-wrap: wrap;
   gap: 50px;
+
+  p {
+    font-size: 27px;
+    font-family: 'Lexend Deca', sans-serif;
+    color: #006A71;
+  }
 `;
 const ListCard = styled.li`
   background-color: whitesmoke;
