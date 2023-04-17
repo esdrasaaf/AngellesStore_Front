@@ -2,18 +2,39 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MdHistoryEdu } from "react-icons/md";
 import axios from "axios";
+import swal from "sweetalert";
 
-export default function HistoricTopicComponent({ title, contentArray, config }) {
+export default function HistoricTopicComponent({ title, contentArray, config, setTopicStatus }) {
   const navigate = useNavigate();
 
-  async function addProductToHistoric (productId) {
+  async function addProductToHistoric(productId) {
     try {
         await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/browsingHistory`, { productId }, config);
         navigate(`/product/${productId}`);
     } catch (error) {
         console.log(error);
     }
-  }
+  };
+
+  function deleteProductToHistoric(historicId) {
+    swal({
+      title: "Você deseja apagar esse item do seu histórico?",
+      icon: "info",
+      buttons: true,
+      dangerMode: false,
+    })
+    .then(async (willDelete) => {
+      if (willDelete) {
+        try {
+          await axios.delete(`${process.env.REACT_APP_BACKEND_API_URL}/browsingHistory/${historicId}`, config);
+          setTopicStatus([])
+        } catch (error) {
+            console.log(error);
+        } 
+      } else {
+          swal("OK! Segue tudo do jeito que está! :)");
+      }})
+  };
 
   return (
     <Container>
@@ -25,10 +46,11 @@ export default function HistoricTopicComponent({ title, contentArray, config }) 
       <List>
         {contentArray.map((c, idx) => {
           return (
-            <ListCard key={idx} onClick={() => addProductToHistoric(c.Products.id)}>
-              <img src={c.Products.image} alt="fotozinha ai" />
+            <ListCard key={idx}>
+              <h2 onClick={() => deleteProductToHistoric(c.id)}> X </h2>
+              <img src={c.Products.image} alt="fotozinha ai" onClick={() => addProductToHistoric(c.Products.id)}/>
 
-              <div>
+              <div onClick={() => addProductToHistoric(c.Products.id)}>
                 <span>{c.Products.name}</span>
                 <span>Preço: R$ {c.Products.price}</span>
               </div>
@@ -105,10 +127,30 @@ const ListCard = styled.li`
   padding: 15px;
   flex-shrink: 0;
   border-radius: 15px;
+  position: relative;
 
   &:hover {
     opacity: 0.8;
     cursor: pointer;
+  }
+
+  h2 {
+    background-color: red;
+    font-family: "Lexend Deca", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    width: 16%;
+    height: 10%;
+    border-radius: 100px;
+    padding: 3px;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 0px;
+    right:  0px;
+    z-index: 2;
   }
 
   div {

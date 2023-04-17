@@ -8,7 +8,7 @@ import HistoricTopicComponent from "./HistoricTopic";
 import ReleaseTopicComponent from "./ReleaseTopic";
 
 export default function TopicIndex () {
-    const { config, topicStatus } = useContext(UserInfoContext);
+    const { config, topicStatus, setTopicStatus } = useContext(UserInfoContext);
     const [bestSellers, setBestSellers] = useState([]);
     const [categories, setCategories] = useState([]);
     const [releases, setReleases] = useState([]);
@@ -42,7 +42,7 @@ export default function TopicIndex () {
 
             <ReleaseTopicComponent title={"Lançamentos"} contentArray={releases} config={config}/>
 
-            <HistoricTopicComponent title={"Histórico de navegação"} contentArray={historic} config={config}/>
+            <HistoricTopicComponent title={"Histórico de navegação"} contentArray={historic} config={config} setTopicStatus={setTopicStatus}/>
         </Container>
     );
 }

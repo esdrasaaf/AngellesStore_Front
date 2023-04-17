@@ -9,6 +9,7 @@ import CategoryPage from './pages/CategoryPage/Category'
 import HomePage from './pages/HomePage/Home'
 import ProductPage from './pages/ProductPage/Product'
 import SavesPage from './pages/SavesPage/Save'
+import SearchPage from './pages/SearchPage/Search'
 import UserPage from './pages/UserPage/User'
 
 export default function App () {
@@ -21,6 +22,7 @@ export default function App () {
                         <Route path='/sign-up' element={<SignUpPage />}/>
                         <Route path='/home' element={<HomePage />} />
                         <Route path='/product/:productId' element={<ProductPage />} />
+                        <Route path='/product/search/:productName' element={<SearchPage />} />
                         <Route path='/category/:categoryId' element={<CategoryPage />} />
                         <Route path='/cart' element={<CartPage />} />
                         <Route path='/catalog' element={<CatalogPage />} />

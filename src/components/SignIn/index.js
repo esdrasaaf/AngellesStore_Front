@@ -83,6 +83,7 @@ export default function SignInIndex() {
         };
     }
 
+    localStorage.setItem("userId", userData.data.userId);
     localStorage.setItem("userName", userData.data.userName);
     localStorage.setItem("userPhoto", userData.data.userPhoto);
     localStorage.setItem('userEmail', censoredEmailName + "@" + censoredEmailAddress)

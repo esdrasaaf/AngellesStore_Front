@@ -8,6 +8,7 @@ import { HiOutlinePencilAlt } from "react-icons/hi";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserInfoContext } from "../../contexts/UserContext";
+import UserAvaliationsComponent from "./UserAvaliations";
 
 export default function UserPageIndex () {
     let newImage = '';
@@ -18,6 +19,7 @@ export default function UserPageIndex () {
     const navigate = useNavigate();
     const { config } = useContext(UserInfoContext);
     const [status, setStatus] = useState([]);
+    const [avaliations, setAvaliations] = useState([]);
     const [newImageState, setNewImage] = useState(localStorage.getItem("userPhoto"));
     const [newNameState, setNewName] = useState(localStorage.getItem("userName"));
     const [newEmailState, setNewEmail] = useState(localStorage.getItem("userEmail"));
@@ -31,6 +33,9 @@ export default function UserPageIndex () {
         async function getData() {
             try {
                 const userData = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/user`, config);
+                const userAvaliations = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/avaliations/user`, config);
+
+                setAvaliations(userAvaliations.data)
 
                 localStorage.setItem("userName", userData.data.userName);
                 localStorage.setItem("userPhoto", userData.data.userPhoto);
@@ -318,8 +323,9 @@ export default function UserPageIndex () {
                             </LogoutSection>
                         </UserNameAndLogout>
                     </UserInfos>
-
                 </UserCard>
+
+                <UserAvaliationsComponent avaliations={avaliations}/>
             </MidContent>
 
             <FooterComponent />
@@ -331,17 +337,19 @@ export default function UserPageIndex () {
 const Container = styled.div`
 `
 const MidContent = styled.div`
-    min-height: 90vh;
-    height: 90vh;
+    height: auto;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 80px;
+    padding: 40px 0px;
 `
 const UserCard = styled.div`
     background-color: #006A71;
-    height: 80%;
-    width: 70%;
+    height: 65vh;
+    width: 60%;
     padding: 20px;
     display: flex;
     justify-content: space-around;
