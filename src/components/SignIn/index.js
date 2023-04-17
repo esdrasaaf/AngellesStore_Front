@@ -5,7 +5,7 @@ import loginBackground from "../../assets/images/loginBackground.jpg";
 import logoLogin from "../../assets/images/logoLogin.png"
 import olhoAberto from "../../assets/images/olhoAberto.svg"
 import olhoFechado from "../../assets/images/olhoFechado.svg"
-import LoginButton from "../../constants/LoginButton";
+import LoginButton from "../../constants/NiceButton";
 import swal from 'sweetalert';
 import axios from 'axios';
 

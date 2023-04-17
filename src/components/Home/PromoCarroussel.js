@@ -47,7 +47,7 @@ function Slider({ image }) {
 const Container = styled.div`
     background-color: white;
     width: 80%;
-    height: 50%;
+    height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
