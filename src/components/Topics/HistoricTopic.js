@@ -1,9 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MdHistoryEdu } from "react-icons/md";
+import axios from "axios";
 
-export default function HistoricTopicComponent({ title, contentArray }) {
+export default function HistoricTopicComponent({ title, contentArray, config }) {
   const navigate = useNavigate();
+
+  async function addProductToHistoric (productId) {
+    try {
+        await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/browsingHistory`, { productId }, config);
+        navigate(`/product/${productId}`);
+    } catch (error) {
+        console.log(error);
+    }
+  }
 
   return (
     <Container>
@@ -15,7 +25,7 @@ export default function HistoricTopicComponent({ title, contentArray }) {
       <List>
         {contentArray.map((c, idx) => {
           return (
-            <ListCard key={idx} onClick={() => navigate(`/product/${c.Products.id}`)}>
+            <ListCard key={idx} onClick={() => addProductToHistoric(c.Products.id)}>
               <img src={c.Products.image} alt="fotozinha ai" />
 
               <div>

@@ -7,7 +7,6 @@ import NiceButton from "../../constants/NiceButton";
 
 export default function ProductComponent({ product, config }) {
   const navigate = useNavigate();
-  console.log(product);
 
   useEffect(() => {
     if (!localStorage.getItem("token")) navigate("/");

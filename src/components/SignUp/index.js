@@ -56,7 +56,7 @@ export default function SignUpIndex() {
 
           <SignInForm onSubmit={postRegister}>
               <input id="name" placeholder="Name" type="text" name="name" autoComplete="off" onChange={(e) => setName(e.target.value)} required />
-              <input id="image" placeholder="Image URL" type="url" name="image" autoComplete="off" onChange={(e) => setImage(e.target.value)} required />
+              <input id="image" placeholder="Image URL (Opcional)" type="url" name="image" autoComplete="off" onChange={(e) => setImage(e.target.value)} />
               <input id="email" placeholder="E-mail" type="email" name="email" autoComplete="off" onChange={(e) => setEmail(e.target.value)} required />
               <div>
                 <input id="password" placeholder="Password" type={passwordIsVisible ? "text" : "password"} name="Password" onChange={(e) => setPassword(e.target.value)} required />

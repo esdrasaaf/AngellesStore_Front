@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import loginBackground from "../../assets/images/loginBackground.jpg";
@@ -8,12 +8,14 @@ import olhoFechado from "../../assets/images/olhoFechado.svg"
 import LoginButton from "../../constants/NiceButton";
 import swal from 'sweetalert';
 import axios from 'axios';
+import { UserInfoContext } from '../../contexts/UserContext';
 
 export default function SignInIndex() {
   const [passwordIsVisible, setPasswordIsVisible] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const { setTopicStatus } = useContext(UserInfoContext);
 
   useEffect (() => {
     if (localStorage.getItem("token")) navigate("/home");
@@ -28,6 +30,8 @@ export default function SignInIndex() {
       localStorage.setItem("token", userData.data.userToken);
       localStorage.setItem("userId", userData.data.userId);
       localStorage.setItem("userName", userData.data.userName);
+      localStorage.setItem("userPhoto", userData.data.userPhoto);
+      setTopicStatus([]);
       navigate("/home");
 
       swal({

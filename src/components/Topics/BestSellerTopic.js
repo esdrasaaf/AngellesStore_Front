@@ -8,8 +8,7 @@ export default function BestSellerTopicComponent({ title, contentArray, config }
 
   async function addProductToHistoric (productId) {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/historic`, { productId }, config);
-        console.log(response);
+        await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/browsingHistory`, { productId }, config);
         navigate(`/product/${productId}`);
     } catch (error) {
         console.log(error);

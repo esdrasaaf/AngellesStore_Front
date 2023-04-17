@@ -8,7 +8,7 @@ import HistoricTopicComponent from "./HistoricTopic";
 import ReleaseTopicComponent from "./ReleaseTopic";
 
 export default function TopicIndex () {
-    const { config } = useContext(UserInfoContext);
+    const { config, topicStatus } = useContext(UserInfoContext);
     const [bestSellers, setBestSellers] = useState([]);
     const [categories, setCategories] = useState([]);
     const [releases, setReleases] = useState([]);
@@ -20,7 +20,7 @@ export default function TopicIndex () {
                 const categoriesResponse = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/categories`);
                 const bestSellersResponse = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/products/bestsellers`, config);
                 const releasesResponse = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/products/releases`, config);
-                const historicResponse = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/historic`, config);
+                const historicResponse = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/browsingHistory`, config);
 
                 setCategories(categoriesResponse.data);
                 setBestSellers(bestSellersResponse.data);
@@ -32,7 +32,7 @@ export default function TopicIndex () {
         }
 
         getTopics();
-    }, [])
+    }, [topicStatus])
 
     return (
         <Container>
@@ -42,7 +42,7 @@ export default function TopicIndex () {
 
             <ReleaseTopicComponent title={"Lançamentos"} contentArray={releases} config={config}/>
 
-            <HistoricTopicComponent title={"Histórico de navegação"} contentArray={historic}/>
+            <HistoricTopicComponent title={"Histórico de navegação"} contentArray={historic} config={config}/>
         </Container>
     );
 }
