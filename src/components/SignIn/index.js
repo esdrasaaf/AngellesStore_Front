@@ -25,13 +25,12 @@ export default function SignInIndex() {
     e.preventDefault()
 
     try {
-      const userData = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/auth/sign-in`, { email, password });
+      const userDataWithToken = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/auth/sign-in`, { email, password });
+      const userData = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/user`, { headers: { Authorization: `Bearer ${userDataWithToken.data.userToken}` } });
 
-      localStorage.setItem("token", userData.data.userToken);
-      localStorage.setItem("userId", userData.data.userId);
-      localStorage.setItem("userName", userData.data.userName);
-      localStorage.setItem("userPhoto", userData.data.userPhoto);
-      setTopicStatus([]);
+      setTokenAndPasswordOnLocalStorage(userDataWithToken);
+      setUserDataOnLocalStorage(userData);
+
       navigate("/home");
 
       swal({
@@ -40,12 +39,55 @@ export default function SignInIndex() {
         icon: "success",
       });
     } catch (error) {
+      console.log(error)
       swal({
         title: error.response.data,
         icon: "error",
       });
     }
-}
+  }
+
+  function setTokenAndPasswordOnLocalStorage (userData) {
+    localStorage.setItem("token", userData.data.userToken);
+
+    const modifiedPassword = userData.data.userPassword?.replace(" ", '');
+    let replacedPassword = '';
+
+    for (let i = 0; i < modifiedPassword?.length; i++) {
+        replacedPassword += "*";
+    }
+
+    localStorage.setItem('userPassword', replacedPassword);
+  }
+
+  function setUserDataOnLocalStorage (userData) {
+    const emailParts = userData.data.userEmail?.split("@");
+    const leftEmailContent = emailParts[0];
+    const rigthEmailContent = emailParts[1];
+    let censoredEmailName = '';
+    let censoredEmailAddress = '';
+
+    for (let i = 0; i < leftEmailContent.length; i++) {
+        if (i <= 2) { 
+            censoredEmailName += leftEmailContent[i];
+        } else {
+            censoredEmailName += "*";
+        };
+    }
+
+    for (let i = 0; i < rigthEmailContent.length; i++) {
+        if (i <= 2) { 
+            censoredEmailAddress += rigthEmailContent[i] 
+        } else {
+          censoredEmailAddress += "*";
+        };
+    }
+
+    localStorage.setItem("userName", userData.data.userName);
+    localStorage.setItem("userPhoto", userData.data.userPhoto);
+    localStorage.setItem('userEmail', censoredEmailName + "@" + censoredEmailAddress)
+    setTopicStatus([]);
+  }
 
   return (
     <Container>
