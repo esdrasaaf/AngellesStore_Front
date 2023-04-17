@@ -135,7 +135,7 @@ const ProductInfo = styled.div`
     top: -5px;
     right: 0;
     font-size: 50px;
-    color: ${props => props.isSaved ? "#F9F54B" : "white"};
+    color: ${props => props.isSaved ? "#F2DF3A" : "white"};
     cursor: pointer;
   }
 
