@@ -31,7 +31,7 @@
 Clone o repositorio
 
 ```bash
-$ git clone https://github.com/igorhnovais/FRONT-ecommerceWine.git
+$ git clone https://github.com/esdrasaaf/AngellesStore_Front.git
 
 ```
 
@@ -51,93 +51,126 @@ $ npm start
 
 ## 🏁 Rotas
 
-1. Rota inicial:
+1. Rota de login do usuário:
 
     Route: ```"/"```
     
-    Desrição: essa rota redireciona para a rota de produtos da home.
+    Descrição: Essa rota serve para que o usuário logue no site com a sua conta.
 
 2. Rota para cadastrar um novo usuario:
     
     Route ```"/sign-up"``` 
 
-    Desrição: nela você consegue se cadastrar para poder usar o app. 
+    Descrição: Essa rota serve para que o usuário cadastre-se no site. 
     
     Entrada:
     ```bash
         {
-            "name": "igor",
-            "email": "igor@driven.com.br",
-            "password": "driven",
-            "confirmPassword": "driven"  
+            "name": "esdras",
+            "email": "teste@gmail.com.br",
+            "password": "123456",
+            "image": "image url"  
         }
     ```
 
-3. Rota para fazer login no app:
+3. Rota para acessar a página principal:
     
-    Route: ```"/sign-in"``` 
+    Route: ```"/home"``` 
 
-    Desrição: nela você consegue por seu email e senha já cadastrados anteriormente e assim terá acesso ao app.
+    Descrição: Nesta rota o usuário estará acessando a página home do site, visualizando as principais promoções, produtos, categorias e funcionalidades do site.
     
-    Entrada:
-    ```bash
-        {
-            "email": "igor@driven.com.br",
-            "password": "driven"  
-        }
-    ```
-4. Pegar todos os produtos do ecommerce:
+
+4. Visualizar produtos específicos do ecommerce:
     
-    Route: ```"/products"``` 
+    Route: ```"/product/:productId"``` 
 
-    Desrição: nessa rota vai aparecer todos os produtos disponiveis do ecommerce
+    Descrição: Nesta rota vai aparecer as informações do produto que você selecionou.
 
-5. Pagina do produto: 
+5. Página de pesquisa do produto: 
 
-    Route get: ```"/product/:productId"``` 
+    Route get: ```"/product/search/:productName"``` 
     
-    Desrição: nessa rota aparece o produto sozinho, onde está todas as suas descrições e um botão pra adicionar no carrinho caso o usuario ja esteja logado. 
+    Descrição: Nesta rota o usuário é redirecionado para a página de pesquisa , onde os resultados aparecem por meio da filtragem de nome. 
 
 
-6. Carrinho:
+6. Categorias:
+
+    Route get: ```"/category/:categoryId"```
+    
+    Desrição: Nesta rota, é apresentado os produtos de uma determinada categoria.
+
+    
+7. Catálogo:
+
+    Route get: ```"/catalog"```
+    
+    Desrição: Nesta rota é apresentado todos os produtos disponíveis no site.
+
+
+8. Página do Usuário:
+
+    Route get: ```"/user"```
+    
+    Desrição: Nesta rota, o usuário pode ver todas as suas informações, bem como o seu email, senha, foto de perfil e compras realizadas.
+
+
+9. Página do Usuário:
+
+    Route get: ```"/saves"```
+    
+    Desrição: Nesta rota, o usuário pode ver todos os produtos favoritados.
+
+10. Carrinho:
 
     Route post: ```"/cart"```
     
-    Desrição: Essa é a rota onde vc vai encontrar o seu carrinho, se não tiver nenhum produto, ele te direciona pra home.
-    Caso ja tenha produtos inseridos, ele vai te listar esses produtos e o valor do carrinho em baixo, junto com o botão de compra, onde vc será redirecionado para a Api externa da stripe
+    Desrição: Nesta rota, o usuário poderá ver a sua lista de compras e de fato efetuar a sua comprar atravéz da API da stripe.
 
-    
-
-
-7. Rota do administrador:
-
-    Route put: ```"/adm"```
-    
-    Desrição: Nessa rota apenas o administrador tem acesso, e nela ele poderá adicionar um novo produto ou remover um produto ja existente.
-
-    Entrada para novo produto: 
-    ```bash
-    {
-        "image": "https://www.wine.com.br/cdn-cgi/image/q=99,f=png,h=176/assets-images/produtos/20884-01.png",
-        "name":"Davideira",
-        "description": "O nome Davideira faz alusão ao fruto que sai da videira, a uva. Em Portugal, as uvas crescem há mais de 4 mil anos. É um cultivo que faz parte da história do país. Esse vinho é uma homenagem à uva, elaborado com castas típicas do país.",
-        "type": "Portugal Tinto Meio Seco 750 ml",
-        "alcohol": "13.00% ABV",
-        "value": 6490,
-        "type_product": "wine"
-    }
+    Body:
+   
+    ```
+      [
+        {
+          brandId:
+          categoryId: 
+          colorId: 
+          createdAt:
+          description:
+          id:
+          image:
+          name:
+          numberOfSales:
+          price:
+          updatedAt:
+        },
+        {
+          brandId:
+          categoryId: 
+          colorId: 
+          createdAt:
+          description:
+          id:
+          image:
+          name:
+          numberOfSales:
+          price:
+          updatedAt:
+        }...
+      ]
     ```
 
-1. Rota inexistente:
+    Obs: Em caso de sucesso/falha na transação, há uma rota que traz essas informações para o usuário.
+
+11. Rota inexistente:
 
     Route: ```"*"```
     
-    Desrição: nessa rota, caso o usuario escreve uma rota qualquer na url inexistente, é redirecionado para a rota "/404".
+    Descrição: Nesta rota, caso o usuario escreva uma url inexistente, ele é redirecionado para a rota "/404".
 
-8. Rota 404 (not found):
+12. Rota 404 (not found):
 
     Route: ```"/404"```
     
-    Desrição: Caso seja redirecionado pra essa rota, mostra pro usuario que não existe e pede pro usuario voltar pra home.
+    Desrição: Caso seja redirecionado pra essa rota, mostra para o usuário que a rota não existe e redireciona pra home.
 
 
