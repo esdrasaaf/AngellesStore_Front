@@ -97,34 +97,34 @@ $ npm start
 
     Route get: ```"/category/:categoryId"```
     
-    Desrição: Nesta rota, é apresentado os produtos de uma determinada categoria.
+    Descrição: Nesta rota, é apresentado os produtos de uma determinada categoria.
 
     
 7. Catálogo:
 
     Route get: ```"/catalog"```
     
-    Desrição: Nesta rota é apresentado todos os produtos disponíveis no site.
+    Descrição: Nesta rota é apresentado todos os produtos disponíveis no site.
 
 
 8. Página do Usuário:
 
     Route get: ```"/user"```
     
-    Desrição: Nesta rota, o usuário pode ver todas as suas informações, bem como o seu email, senha, foto de perfil e compras realizadas.
+    Descrição: Nesta rota, o usuário pode ver todas as suas informações, bem como o seu email, senha, foto de perfil e compras realizadas.
 
 
 9. Página do Usuário:
 
     Route get: ```"/saves"```
     
-    Desrição: Nesta rota, o usuário pode ver todos os produtos favoritados.
+    Descrição: Nesta rota, o usuário pode ver todos os produtos favoritados.
 
 10. Carrinho:
 
     Route post: ```"/cart"```
     
-    Desrição: Nesta rota, o usuário poderá ver a sua lista de compras e de fato efetuar a sua comprar atravéz da API da stripe.
+    Descrição: Nesta rota, o usuário poderá ver a sua lista de compras e de fato efetuar a sua comprar atravéz da API da stripe.
 
     Body:
    
@@ -155,7 +155,8 @@ $ npm start
           numberOfSales:
           price:
           updatedAt:
-        }...
+        },
+        ...
       ]
     ```
 
@@ -171,6 +172,6 @@ $ npm start
 
     Route: ```"/404"```
     
-    Desrição: Caso seja redirecionado pra essa rota, mostra para o usuário que a rota não existe e redireciona pra home.
+    Descrição: Caso seja redirecionado pra essa rota, mostra para o usuário que a rota não existe e redireciona pra home.
 
 
