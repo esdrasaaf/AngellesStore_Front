@@ -23,7 +23,7 @@
 - Esse projeto foi idealizado a partir de um sonho antigo da minha mãe, Anathusia Antero. Ela almeja ter uma marca de roupas infantis, empreender e criar seu próprio comércio. Então, utilizando meus conhecimentos em programação, desenvolvi um ecommerce focado em roupas infantis, para dar o que seria o ponta pé inicial para a concretização deste objetivo. Vale salientar que o site NÃO está totalmente completo! Mas, já está bem completo e com bastante funcionalidades. 
 
 ### Link do back-end desse projeto
-- https://github.com/igorhnovais/API-EcommerceWine](https://github.com/esdrasaaf/AngellesStore_Back
+- https://github.com/esdrasaaf/AngellesStore_Back
 <a name="usando"></a>
 
 ## 🏁 Usando
