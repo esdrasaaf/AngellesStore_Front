@@ -24,6 +24,7 @@
 
 ### Link do back-end desse projeto
 - https://github.com/esdrasaaf/AngellesStore_Back
+- **É importante lembrar que para o usuário interagir os produtos, carrinho, lista de favoritos e afins, é necessário que o back-end esteja rodando em conjunto com o front-end :)**
 <a name="usando"></a>
 
 ## 🏁 Usando
