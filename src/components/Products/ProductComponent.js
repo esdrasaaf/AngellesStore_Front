@@ -189,8 +189,12 @@ export default function ProductComponent({ product, config }) {
                 emptySymbol={<img src={emptyStar} className="icon" />}
                 fullSymbol={<img src={ratingStar} className="icon" />}
               />
-              <button>enviar</button>
             </div>
+
+            <NiceButton
+              content={"Enviar Avaliação"}
+              backgroundColor={"#FC7978"}
+            />
           </AddAvaliationForm>
           :
           <></>
@@ -553,25 +557,32 @@ const RatingWithLogout = styled.div`
 
 const AddAvaliationForm = styled.form`
   margin: 20px 40px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  button {
+    margin-top: 30px;
+    height: 40px;
+  }
 
   div {
+    width: 100%;
     display: flex;
-    gap: 20px;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    flex-direction: column;
+
+    img {
+      height: 60px;
+    }
 
     input {
       height: 60px;
       width: 70%;
+      border: none;
       padding: 20px;
       box-sizing: border-box;
-    }
-
-    button {
-      height: 40px;
-      width: 15%;
-      cursor: pointer;
+      border-radius: 15px;
     }
   }
 `
