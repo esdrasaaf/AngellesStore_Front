@@ -23,7 +23,7 @@ export default function SignInIndex() {
 
   async function postLogin (e) {
     e.preventDefault()
-
+    
     try {
       const userDataWithToken = await axios.post(`${process.env.REACT_APP_BACKEND_API_URL}/auth/sign-in`, { email, password });
       const userData = await axios.get(`${process.env.REACT_APP_BACKEND_API_URL}/user`, { headers: { Authorization: `Bearer ${userDataWithToken.data.userToken}` } });
